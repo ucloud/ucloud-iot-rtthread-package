@@ -124,9 +124,9 @@ static void on_message_callback(void *pClient, MQTTMessage *message, void *userD
  */
 static int _setup_connect_init_params(MQTTInitParams* initParams)
 {
-	initParams->device_sn = PKG_USING_UCLOUD_IOT_DEVICE_SN;
-	initParams->product_sn = PKG_USING_UCLOUD_IOT_PRODUCT_SN;
-	initParams->device_secret = PKG_USING_UCLOUD_IOT_DEVICE_SECRET;
+	initParams->device_sn = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
+	initParams->product_sn = PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
+	initParams->device_secret = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
 
 	initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;
 	initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
@@ -149,7 +149,7 @@ static int _setup_connect_init_params(MQTTInitParams* initParams)
 static int _publish_msg(void *client)
 {
     char topicName[128] = {0};
-    HAL_Snprintf(topicName, 128, "/%s/%s/%s", PKG_USING_UCLOUD_IOT_PRODUCT_SN, PKG_USING_UCLOUD_IOT_DEVICE_SN, "set");
+    HAL_Snprintf(topicName, 128, "/%s/%s/%s", PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, "set");
 
     PublishParams pub_params = DEFAULT_PUB_PARAMS;
     pub_params.qos = QOS1;
@@ -176,7 +176,7 @@ static int _publish_msg(void *client)
 static int _register_subscribe_topics(void *client)
 {
     static char topic_name[128] = {0};
-    int size = HAL_Snprintf(topic_name, sizeof(topic_name), "/%s/%s/%s", PKG_USING_UCLOUD_IOT_PRODUCT_SN, PKG_USING_UCLOUD_IOT_DEVICE_SN, "set");
+    int size = HAL_Snprintf(topic_name, sizeof(topic_name), "/%s/%s/%s", PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, "set");
     if (size < 0 || size > sizeof(topic_name) - 1)
     {
         HAL_Printf("topic content length not enough! content size:%d  buf size:%d\n", size, (int)sizeof(topic_name));

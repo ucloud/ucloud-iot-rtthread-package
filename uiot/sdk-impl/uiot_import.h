@@ -320,7 +320,7 @@ int HAL_AT_Read(_IN_ utils_network_pt pNetwork, _OU_ unsigned char *buffer, _IN_
 
 int HAL_AT_Write(_IN_ unsigned char *buffer, _IN_ size_t len);
 
-int HAL_AT_TCP_Disconnect();
+int HAL_AT_TCP_Disconnect(void);
 
 int HAL_AT_TCP_Connect(_IN_ void * pNetwork, _IN_ const char *host, _IN_ uint16_t port); 
 

@@ -95,9 +95,9 @@ int property_set_cb(const char *request_id, const char *property){
 
 static int _setup_connect_init_params(MQTTInitParams* initParams)
 {
-	initParams->device_sn = PKG_USING_UCLOUD_IOT_DEVICE_SN;
-	initParams->product_sn = PKG_USING_UCLOUD_IOT_PRODUCT_SN;
-	initParams->device_secret = PKG_USING_UCLOUD_IOT_DEVICE_SECRET;
+	initParams->device_sn = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
+	initParams->product_sn = PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
+	initParams->device_secret = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
 	initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;
 	initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
 	initParams->auto_connect_enable = 1;
@@ -125,7 +125,7 @@ static void mqtt_devmodel_thread(void)
     }
     IOT_MQTT_Yield(client, 50);
 
-    void *h_dm = IOT_DM_Init(PKG_USING_UCLOUD_IOT_PRODUCT_SN, PKG_USING_UCLOUD_IOT_DEVICE_SN, client);
+    void *h_dm = IOT_DM_Init(PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, client);
     if (NULL == h_dm) {
         LOG_ERROR("initialize device model failed");
 		return;
