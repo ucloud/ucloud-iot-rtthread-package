@@ -76,9 +76,9 @@ static void _update_ack_cb(void *pClient, Method method, RequestAck requestAck, 
 static int _setup_connect_init_params(MQTTInitParams* initParams)
 {
     int ret = SUCCESS_RET;
-	initParams->device_sn = (char *)PKG_USING_UCLOUD_IOT_DEVICE_SN;
-	initParams->product_sn = (char *)PKG_USING_UCLOUD_IOT_PRODUCT_SN;
-	initParams->device_secret = (char *)PKG_USING_UCLOUD_IOT_DEVICE_SECRET;
+	initParams->device_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
+	initParams->product_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
+	initParams->device_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
 
 	initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;
 	initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
@@ -104,7 +104,7 @@ static void shadow_test_thread(void)
         return;
     }
     
-    void *shadow_client = IOT_Shadow_Construct(PKG_USING_UCLOUD_IOT_PRODUCT_SN, PKG_USING_UCLOUD_IOT_DEVICE_SN, mqtt_client);
+    void *shadow_client = IOT_Shadow_Construct(PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, mqtt_client);
     if(shadow_client == NULL)
     {
         HAL_Printf("IOT_Shadow_Construct fail\n");

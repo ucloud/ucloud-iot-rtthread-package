@@ -73,9 +73,9 @@ static void event_handler(void *pClient, void *handle_context, MQTTEventMsg *msg
 
 static int _setup_connect_init_params(MQTTInitParams* initParams)
 {
-	initParams->device_sn = PKG_USING_UCLOUD_IOT_DEVICE_SN;
-	initParams->product_sn = PKG_USING_UCLOUD_IOT_PRODUCT_SN;
-	initParams->device_secret = PKG_USING_UCLOUD_IOT_DEVICE_SECRET;
+	initParams->device_sn = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
+	initParams->product_sn = PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
+	initParams->device_secret = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
 	initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;    
 	initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
 	initParams->auto_connect_enable = 1;
@@ -87,12 +87,6 @@ static int _setup_connect_init_params(MQTTInitParams* initParams)
 static void ota_test_thread(void)
 {
     int rc;
-    int ota_over = 0;
-    bool upgrade_fetch_success = true;
-    // 用于存放云端下发的固件版本
-    char msg_version[33];
-    FILE *fp;
-    char buf_ota[OTA_BUF_LEN];
 
     MQTTInitParams init_params = DEFAULT_MQTT_INIT_PARAMS;
     rc = _setup_connect_init_params(&init_params);
@@ -108,7 +102,7 @@ static void ota_test_thread(void)
 		return;
     }
 
-    void *h_ota = IOT_OTA_Init(PKG_USING_UCLOUD_IOT_PRODUCT_SN, PKG_USING_UCLOUD_IOT_DEVICE_SN, client);
+    void *h_ota = IOT_OTA_Init(PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, client);
     if (NULL == h_ota) {
         LOG_ERROR("init OTA failed");
 		return;
@@ -129,7 +123,6 @@ static void ota_test_thread(void)
         IOT_MQTT_Yield(client, 10);
     } while(1);
 
-    return;
 }
 
 static int ota_test_example(int argc, char **argv)

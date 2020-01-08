@@ -1272,7 +1272,6 @@ int cycle_for_read(UIoT_Client *pClient, Timer *timer, uint8_t *packet_type, QoS
              * Should not happen */
              
             return ERR_MQTT_RX_MESSAGE_PACKET_TYPE_INVALID;
-            break;
         }
     }
 

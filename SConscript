@@ -35,9 +35,7 @@ if GetDepend(['PKG_USING_UCLOUD_MQTT']):
 	src_base += Glob('uiot/utils/*.c')
 	src_base += Glob('ports/rtthread/*.c')
 	src_base += Glob('ports/fal/*.c')
-	SrcRemove(src_base, 'ucloud-iot-sdk/uiot/utils/utils_httpc.c')
-	SrcRemove(src_base, 'ucloud-iot-sdk/uiot/utils/utils_md5.c')
-	SrcRemove(src_base, 'ucloud-iot-sdk/uiot/utils/utils_sha2.c')	
+	SrcRemove(src_base, 'uiot/utils/utils_sha2.c')		
 
 #enable dynamic auth
 if GetDepend(['PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH']):
@@ -62,7 +60,7 @@ if GetDepend(['PKG_USING_UCLOUD_TLS']):
 	CPPDEFINES += ['SUPPORT_TLS', 'MBEDTLS_CONFIG_FILE=<HAL_TLS_config.h>']	
 
 #Hub C-SDK core
-group = DefineGroup('ucloud-iot', src_base, depend = ['PKG_USING_UCLOUD_IOT'], CPPPATH = CPPPATH, LOCAL_CCFLAGS = LOCAL_CCFLAGS, CPPDEFINES = CPPDEFINES)
+group = DefineGroup('ucloud_iot_sdk', src_base, depend = ['PKG_USING_UCLOUD_IOT_SDK'], CPPPATH = CPPPATH, LOCAL_CCFLAGS = LOCAL_CCFLAGS, CPPDEFINES = CPPDEFINES)
 
 #MQTT Example
 if GetDepend(['PKG_USING_UCLOUD_MQTT_SAMPLE']):
