@@ -26,13 +26,13 @@ bool HAL_Timer_Expired(Timer *timer) {
     return timer->end_time < now;
 }
 
-void HAL_Timer_Countdown_ms(_IN_ Timer *timer, unsigned int timeout_ms) {
+void HAL_Timer_Countdown_ms(Timer *timer, uint32_t timeout_ms) {
     rt_tick_t now;
     now = rt_tick_get();
     timer->end_time = now + rt_tick_from_millisecond(timeout_ms);
 }
 
-void HAL_Timer_Countdown(_IN_ Timer *timer, unsigned int timeout) {
+void HAL_Timer_Countdown(Timer *timer, uint32_t timeout) {
     rt_tick_t now;
     now = rt_tick_get();
     timer->end_time = now + rt_tick_from_millisecond(timeout * 1000);
