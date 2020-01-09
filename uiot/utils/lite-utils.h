@@ -57,6 +57,14 @@ extern "C" {
     } while(0)
 #endif
 
+#ifndef SCNi8
+#define SCNi8 "hhi"
+#endif
+
+#ifndef SCNu8
+#define SCNu8 "hhu"  
+#endif
+
 char       	   *LITE_strdup(const char *src);
 char       	   *LITE_format_string(const char *fmt, ...);
 char       	   *LITE_format_nstring(const int len, const char *fmt, ...);
