@@ -47,8 +47,6 @@ typedef struct  {
     Timer                   report_timer;
 } OTA_Struct_t;
 
-extern int http_ota_fw_download(const char* uri);
-
 static void _ota_callback(void *pContext, const char *msg, uint32_t msg_len) {
     char *msg_method = NULL;
     char *msg_str = NULL;
