@@ -28,57 +28,64 @@ static int running_state = 0;
 
 static void event_handler(void *pClient, void *handle_context, MQTTEventMsg *msg)
 {
-	switch(msg->event_type) {
-		case MQTT_EVENT_UNDEF:
-			LOG_INFO("undefined event occur.\n");
-			break;
+    switch(msg->event_type) {
+        case MQTT_EVENT_UNDEF:
+            LOG_INFO("undefined event occur.\n");
+            break;
 
-		case MQTT_EVENT_DISCONNECT:
-			LOG_INFO("MQTT disconnect.\n");
-			break;
+        case MQTT_EVENT_DISCONNECT:
+            LOG_INFO("MQTT disconnect.\n");
+            break;
 
-		case MQTT_EVENT_RECONNECT:
-			LOG_INFO("MQTT reconnect.\n");
-			break;
+        case MQTT_EVENT_RECONNECT:
+            LOG_INFO("MQTT reconnect.\n");
+            break;
 
-		case MQTT_EVENT_SUBSCRIBE_SUCCESS:
-			LOG_INFO("subscribe success.\n");
-			break;
+        case MQTT_EVENT_SUBSCRIBE_SUCCESS:
+            LOG_INFO("subscribe success.\n");
+            break;
 
-		case MQTT_EVENT_SUBSCRIBE_TIMEOUT:
-			LOG_INFO("subscribe wait ack timeout.\n");
-			break;
+        case MQTT_EVENT_SUBSCRIBE_TIMEOUT:
+            LOG_INFO("subscribe wait ack timeout.\n");
+            break;
 
-		case MQTT_EVENT_SUBSCRIBE_NACK:
-			LOG_INFO("subscribe nack.\n");
-			break;
+        case MQTT_EVENT_SUBSCRIBE_NACK:
+            LOG_INFO("subscribe nack.\n");
+            break;
 
-		case MQTT_EVENT_PUBLISH_SUCCESS:
-			LOG_INFO("publish success.\n");
-			break;
+        case MQTT_EVENT_PUBLISH_SUCCESS:
+            LOG_INFO("publish success.\n");
+            break;
 
-		case MQTT_EVENT_PUBLISH_TIMEOUT:
-			LOG_INFO("publish timeout.\n");
-			break;
+        case MQTT_EVENT_PUBLISH_TIMEOUT:
+            LOG_INFO("publish timeout.\n");
+            break;
 
-		case MQTT_EVENT_PUBLISH_NACK:
-			LOG_INFO("publish nack.\n");
-			break;
-		default:
-			LOG_INFO("Should NOT arrive here.\n");
-			break;
-	}
+        case MQTT_EVENT_PUBLISH_NACK:
+            LOG_INFO("publish nack.\n");
+            break;
+        default:
+            LOG_INFO("Should NOT arrive here.\n");
+            break;
+    }
 }
 
 
 static int _setup_connect_init_params(MQTTInitParams* initParams)
 {
-	initParams->device_sn = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
-	initParams->product_sn = PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
-	initParams->device_secret = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
-	initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;    
-	initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
-	initParams->auto_connect_enable = 1;
+    initParams->device_sn = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
+    initParams->product_sn = PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
+#ifdef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
+    initParams->product_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SECRET;
+    char device_secret_tmp[IOT_DEVICE_SN_LEN + 1];
+    HAL_GetDeviceSecret(device_secret_tmp);
+    initParams->device_secret = device_secret_tmp;
+#else     
+    initParams->device_secret = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
+#endif
+    initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;    
+    initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
+    initParams->auto_connect_enable = 1;
     initParams->event_handler.h_fp = event_handler;
 
     return SUCCESS_RET;
@@ -90,33 +97,33 @@ static void ota_test_thread(void)
 
     MQTTInitParams init_params = DEFAULT_MQTT_INIT_PARAMS;
     rc = _setup_connect_init_params(&init_params);
-	if (rc != SUCCESS_RET) {
-		return;
-	}
+    if (rc != SUCCESS_RET) {
+        return;
+    }
 
     void *client = IOT_MQTT_Construct(&init_params);
     if (client != NULL) {
         LOG_INFO("MQTT Construct Success");
     } else {
         LOG_ERROR("MQTT Construct Failed");
-		return;
+        return;
     }
 
     void *h_ota = IOT_OTA_Init(PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, client);
     if (NULL == h_ota) {
         LOG_ERROR("init OTA failed");
-		return;
+        return;
     }
 
     /* Must report version first */
     if (IOT_OTA_ReportVersion(h_ota, "1.0.0") < 0) {
         LOG_ERROR("report OTA version failed");
-		return;
+        return;
     }
 
     if (IOT_OTA_RequestFirmware(h_ota, "1.0.0") < 0) {
         LOG_ERROR("Request firmware failed");
-		return;
+        return;
     }
 
     do {
@@ -130,40 +137,40 @@ static int ota_test_example(int argc, char **argv)
     rt_thread_t tid;
     int stack_size = 10240;
 
-	if (2 == argc)
-	{
-		if (!strcmp("start", argv[1]))
-		{
-			if (1 == running_state)
-			{
-				HAL_Printf("mqtt_ota_example is already running\n");
-				return 0;
-			}			
-		}
-		else if (!strcmp("stop", argv[1]))
-		{
-			if (0 == running_state)
-			{
-				HAL_Printf("mqtt_ota_example is already stopped\n");
-				return 0;
-			}
-			running_state = 0;
-			return 0;
-		}
-		else
-		{
-			HAL_Printf("Usage: mqtt_ota_example start/stop");
-			return 0;			  
-		}
-	}
-	else
-	{
-		HAL_Printf("Para err, usage: mqtt_ota_example start/stop");
-		return 0;
-	}
-	
-	tid = rt_thread_create("ota_test", (void (*)(void *))ota_test_thread, 
-							NULL, stack_size, 9, 10);  
+    if (2 == argc)
+    {
+        if (!strcmp("start", argv[1]))
+        {
+            if (1 == running_state)
+            {
+                HAL_Printf("mqtt_ota_example is already running\n");
+                return 0;
+            }            
+        }
+        else if (!strcmp("stop", argv[1]))
+        {
+            if (0 == running_state)
+            {
+                HAL_Printf("mqtt_ota_example is already stopped\n");
+                return 0;
+            }
+            running_state = 0;
+            return 0;
+        }
+        else
+        {
+            HAL_Printf("Usage: mqtt_ota_example start/stop");
+            return 0;              
+        }
+    }
+    else
+    {
+        HAL_Printf("Para err, usage: mqtt_ota_example start/stop");
+        return 0;
+    }
+    
+    tid = rt_thread_create("ota_test", (void (*)(void *))ota_test_thread, 
+                            NULL, stack_size, 9, 10);  
 
     if (tid != RT_NULL)
     {

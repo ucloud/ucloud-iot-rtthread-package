@@ -35,22 +35,22 @@ extern "C" {
 #include "utils_list.h"
 
 /* 报文id最大值 */
-#define MAX_PACKET_ID               								(65535)
+#define MAX_PACKET_ID                                               (65535)
 
 /* 成功订阅主题的最大个数 */
-#define MAX_SUB_TOPICS        								        (10)
+#define MAX_SUB_TOPICS                                              (10)
 
 /* 在列表中最大的重新发布数量 */
 #define MAX_REPUB_NUM                                               (20)
 
 /* 重连最小等待时间 */
-#define MIN_RECONNECT_WAIT_INTERVAL 								(1000)
+#define MIN_RECONNECT_WAIT_INTERVAL                                 (1000)
 
 /* MQTT报文最小超时时间 */
-#define MIN_COMMAND_TIMEOUT         								(500)
+#define MIN_COMMAND_TIMEOUT                                         (500)
 
 /* MQTT报文最大超时时间 */
-#define MAX_COMMAND_TIMEOUT         								(50000)
+#define MAX_COMMAND_TIMEOUT                                         (50000)
 
 /* 云端保留主题的最大长度 */
 #define MAX_SIZE_OF_CLOUD_TOPIC                                     (128)
@@ -71,31 +71,31 @@ extern "C" {
  * @brief MQTT Message Type
  */
 typedef enum msgTypes {
-	RESERVED    = 0,     // Reserved
-	CONNECT     = 1,     // Client request to connect to Server
-	CONNACK     = 2,     // Connect Acknowledgment
-	PUBLISH     = 3,     // Publish message
-	PUBACK      = 4,     // Publish Acknowledgment
-	PUBREC      = 5,     // Publish Received
-	PUBREL      = 6,     // Publish Release
-	PUBCOMP     = 7,     // Publish Complete
-	SUBSCRIBE   = 8,     // Client Subscribe request
-	SUBACK      = 9,     // Subscribe Acknowledgment
-	UNSUBSCRIBE = 10,    // Client Unsubscribe request
-	UNSUBACK    = 11,    // Unsubscribe Acknowledgment
-	PINGREQ     = 12,    // PING Request
-	PINGRESP    = 13,    // PING Response
-	DISCONNECT  = 14     // Client is Disconnecting
+    RESERVED    = 0,     // Reserved
+    CONNECT     = 1,     // Client request to connect to Server
+    CONNACK     = 2,     // Connect Acknowledgment
+    PUBLISH     = 3,     // Publish message
+    PUBACK      = 4,     // Publish Acknowledgment
+    PUBREC      = 5,     // Publish Received
+    PUBREL      = 6,     // Publish Release
+    PUBCOMP     = 7,     // Publish Complete
+    SUBSCRIBE   = 8,     // Client Subscribe request
+    SUBACK      = 9,     // Subscribe Acknowledgment
+    UNSUBSCRIBE = 10,    // Client Unsubscribe request
+    UNSUBACK    = 11,    // Unsubscribe Acknowledgment
+    PINGREQ     = 12,    // PING Request
+    PINGRESP    = 13,    // PING Response
+    DISCONNECT  = 14     // Client is Disconnecting
 } MessageTypes;
 
 typedef enum {
-	DISCONNECTED = 0,
-	CONNECTED	 = 1
+    DISCONNECTED = 0,
+    CONNECTED     = 1
 } ConnStatus;
 
 typedef enum {
-	STATIC_AUTH	 = 1,        
-	DYNAMIC_AUTH = 2,
+    STATIC_AUTH     = 1,        
+    DYNAMIC_AUTH = 2,
 } AuthStatus;
 
 /** 
@@ -108,7 +108,7 @@ typedef enum {
 #define MQTT_HEADER_DUP_MASK            0x08
 #define MQTT_HEADER_QOS_SHIFT           0x01
 #define MQTT_HEADER_QOS_MASK            0x06
-#define MQTT_HEADER_RETAIN_MASK	        0x01
+#define MQTT_HEADER_RETAIN_MASK         0x01
 
 
 /**
@@ -135,17 +135,17 @@ typedef struct {
  *
  */
 typedef struct {
-    char            			*client_id;             // 客户端标识符, 请保持唯一
-    char            			*username;              // 用户名
-    char						*password;				// 密码
+    char                        *client_id;             // 客户端标识符, 请保持唯一
+    char                        *username;              // 用户名
+    char                        *password;                // 密码
 
-    char            			struct_id[4];           // The eyecatcher for this structure.  must be MQTC.
-    uint8_t         			struct_version;         // 结构体版本号, 必须为0
-    uint8_t         			mqtt_version;           // MQTT版本协议号 4 = 3.1.1
-    uint16_t        			keep_alive_interval;    // 心跳周期, 单位: s
-    uint8_t         			clean_session;          // 清理会话标志位, 具体含义请参考MQTT协议说明文档3.1.2.4小结
+    char                        struct_id[4];           // The eyecatcher for this structure.  must be MQTC.
+    uint8_t                     struct_version;         // 结构体版本号, 必须为0
+    uint8_t                     mqtt_version;           // MQTT版本协议号 4 = 3.1.1
+    uint16_t                    keep_alive_interval;    // 心跳周期, 单位: s
+    uint8_t                     clean_session;          // 清理会话标志位, 具体含义请参考MQTT协议说明文档3.1.2.4小结
 
-    uint8_t                   	auto_connect_enable;    // 是否开启自动重连
+    uint8_t                     auto_connect_enable;    // 是否开启自动重连
 } MQTTConnectParams;
 
 /**
@@ -183,7 +183,7 @@ typedef struct Client {
     unsigned char            read_buf[UIOT_MQTT_RX_BUF_LEN];                // MQTT消息接收buffer
 
     void                     *lock_generic;                                 // client原子锁
-    void                     *lock_write_buf;                          		// 输出流的锁
+    void                     *lock_write_buf;                               // 输出流的锁
 
     void                     *lock_list_pub;                                // 等待发布消息ack列表的锁
     void                     *lock_list_sub;                                // 等待订阅消息ack列表的锁
@@ -415,8 +415,8 @@ int wait_for_read(UIoT_Client *pClient, uint8_t packet_type, Timer *timer, QoS q
 /**
  * @brief 设置MQTT当前连接状态
  *
- * @param pClient 		Client结构体
- * @param connected 	0: 连接断开状态  1: 已连接状态
+ * @param pClient       Client结构体
+ * @param connected     0: 连接断开状态  1: 已连接状态
  * @return
  */
 void set_client_conn_state(UIoT_Client *pClient, uint8_t connected);
@@ -424,8 +424,8 @@ void set_client_conn_state(UIoT_Client *pClient, uint8_t connected);
 /**
  * @brief 获取MQTT当前连接状态
  *
- * @param pClient 		Client结构体
- * @return				0: 连接断开状态  1: 已连接状态
+ * @param pClient         Client结构体
+ * @return                0: 连接断开状态  1: 已连接状态
  */
 uint8_t get_client_conn_state(UIoT_Client *pClient);
 
@@ -446,16 +446,16 @@ int uiot_mqtt_pub_info_proc(UIoT_Client *pClient);
 int uiot_mqtt_sub_info_proc(UIoT_Client *pClient);
 
 int push_sub_info_to(UIoT_Client *c, int len, unsigned short msgId, MessageTypes type,
-								   SubTopicHandle *handler, ListNode **node);
+                                   SubTopicHandle *handler, ListNode **node);
 
 int serialize_pub_ack_packet(unsigned char *buf, size_t buf_len, MessageTypes packet_type, uint8_t dup,
-							 uint16_t packet_id,
-							 uint32_t *serialized_len);
+                             uint16_t packet_id,
+                             uint32_t *serialized_len);
 
 int serialize_packet_with_zero_payload(unsigned char *buf, size_t buf_len, MessageTypes packetType, uint32_t *serialized_len);
 
 int deserialize_publish_packet(unsigned char *dup, QoS *qos, uint8_t *retained, uint16_t *packet_id, char **topicName,
-							   uint16_t *topicNameLen, unsigned char **payload, size_t *payload_len, unsigned char *buf, size_t buf_len);
+                               uint16_t *topicNameLen, unsigned char **payload, size_t *payload_len, unsigned char *buf, size_t buf_len);
 
 int deserialize_suback_packet(uint16_t *packet_id, uint32_t max_count, uint32_t *count,
                                      QoS *grantedQoSs, unsigned char *buf, size_t buf_len);
@@ -502,3 +502,4 @@ void mqtt_write_utf8_string(unsigned char **pptr, const char *string);
 #endif
 
 #endif //C_SDK_MQTT_CLIENT_H_
+

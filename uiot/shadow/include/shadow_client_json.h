@@ -30,8 +30,8 @@ extern "C" {
 #include "shadow_client.h"
 
 /* 回复消息中的消息字段 */
-#define METHOD_FIELD	         	        "Method"
-#define PAYLOAD_RESULT_FIELD	            "Payload.RetCode"
+#define METHOD_FIELD                        "Method"
+#define PAYLOAD_RESULT_FIELD                "Payload.RetCode"
 #define PAYLOAD_STATE_REPORTED_FIELD        "Payload.State.Reported"
 #define PAYLOAD_STATE_DESIRED_FIELD         "Payload.State.Desired"
 
@@ -46,9 +46,9 @@ extern "C" {
 #define TIMESTAMP_FIELD                     "Timestamp"
 
 /* 消息类型字段 */
-#define METHOD_CONTROL        	            "control"
-#define METHOD_GET				            "get"
-#define METHOD_UPDATE			            "update"
+#define METHOD_CONTROL                      "control"
+#define METHOD_GET                          "get"
+#define METHOD_UPDATE                       "update"
 #define METHOD_DELETE                       "delete"
 #define METHOD_REPLY                        "reply"
 #define METHOD_GET_REPLY                    "get_reply"
@@ -65,7 +65,7 @@ int _check_snprintf_return(int32_t returnCode, size_t maxSizeOfWrite);
 /**
  * 将一个JSON节点写入到JSON串中
  *
- * @param jsonBuffer   	JSON串
+ * @param jsonBuffer    JSON串
  * @param sizeOfBuffer  可写入大小
  * @param pKey          JSON节点的key
  * @param pData         JSON节点的value
@@ -77,9 +77,9 @@ int put_json_node(char *jsonBuffer, size_t sizeOfBuffer, const char *pKey, void 
 /**
  * @brief 从JSON文档中解析出report字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_payload_state_reported_state(char *pJsonDoc, char **pState);
 
@@ -87,70 +87,70 @@ bool parse_shadow_payload_state_reported_state(char *pJsonDoc, char **pState);
 /**
  * @brief 从JSON文档中解析出desired字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_payload_state_desired_state(char *pJsonDoc, char **pState);
 
 /**
  * @brief 从JSON文档中解析出type字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_method_type(char *pJsonDoc, char **pType);
 
 /**
  * @brief 从JSON文档中解析出recode字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_payload_retcode_type(char *pJsonDoc, uint32_t *pRetCode);
 
 /**
  * @brief 从JSON文档中解析出version字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_version_num(char *pJsonDoc, uint32_t *pVersionNumber);
 
 /**
  * @brief 从JSON文档中解析出reported字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_state_reported_type(char *pJsonDoc, char **pType);
 
 /**
  * @brief 从JSON文档中解析出desired字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_state_desired_type(char *pJsonDoc, char **pType);
 
 /**
  * @brief 从JSON文档中解析出state字段
  *
- * @param pJsonDoc         	待解析的JSON文档
- * @param pType    			输出tyde字段
- * @return                 	返回true, 表示解析成功
+ * @param pJsonDoc              待解析的JSON文档
+ * @param pType                 输出tyde字段
+ * @return                      返回true, 表示解析成功
  */
 bool parse_shadow_state_type(char *pJsonDoc, char **pType);
 
 /**
  * @brief 为GET和DELETE请求构造一个只带有clientToken字段的JSON文档
  *
- * @param tokenNumber   shadow的token值，函数内部每次执行完会自增
+ * @param tokenNumber shadow的token值，函数内部每次执行完会自增
  * @param pJsonBuffer 存储JSON文档的字符串缓冲区
  */
 void build_empty_json(uint32_t *tokenNumber, char *pJsonBuffer);

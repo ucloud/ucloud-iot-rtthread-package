@@ -20,11 +20,11 @@
 extern "C" {
 #endif
 
-#define TYPE_FIELD 				    "Method"
-#define MD5_FIELD				    "Payload.MD5"
-#define VERSION_FIELD			    "Payload.Version"
-#define URL_FIELD				    "Payload.URL"
-#define SIZE_FIELD			        "Payload.Size"
+#define TYPE_FIELD                  "Method"
+#define MD5_FIELD                   "Payload.MD5"
+#define VERSION_FIELD               "Payload.Version"
+#define URL_FIELD                   "Payload.URL"
+#define SIZE_FIELD                  "Payload.Size"
 #define UPDATE_FIRMWARE_METHOD      "update_firmware"
 
 #define REPORT_PROGRESS_MSG_TEMPLATE      "{\"Method\": \"report_progress\", \"Payload\": {\"State\":\"%s\", \"Percent\":%d}}"

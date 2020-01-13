@@ -280,9 +280,9 @@ int32_t HAL_TLS_Read(_IN_ uintptr_t handle, _OU_ unsigned char *buf, _IN_ size_t
 /**
  * @brief   建立TCP连接。根据指定的HOST地址, 服务器端口号建立TCP连接, 返回对应的连接句柄。
  *
- * @host	指定的TCP服务器网络地址
- * @port	指定的TCP服务器端口
- * @return	连接成功, 返回TCP连接句柄，连接失败，返回NULL
+ * @host    指定的TCP服务器网络地址
+ * @port    指定的TCP服务器端口
+ * @return  连接成功, 返回TCP连接句柄，连接失败，返回NULL
  */
 uintptr_t HAL_TCP_Connect(_IN_ const char *host, _IN_ uint16_t port);
 
@@ -290,29 +290,29 @@ uintptr_t HAL_TCP_Connect(_IN_ const char *host, _IN_ uint16_t port);
  * @brief 断开TCP连接, 并释放相关对象资源。
  *
  * @param fd  TCP连接句柄
- * @return	  成功返回SUCCESS，失败返回FAILURE
+ * @return    成功返回SUCCESS，失败返回FAILURE
  */
 int32_t HAL_TCP_Disconnect(_IN_ uintptr_t fd);
 
 /**
  * @brief 向指定的TCP连接写入数据。此接口为同步接口, 如果在超时时间内写入了参数len指定长度的数据则立即返回, 否则在超时时间到时返回。
  *
- * @param fd				TCP连接句柄
- * @param buf				指向数据发送缓冲区的指针
- * @param len				数据发送缓冲区的字节大小
- * @param timeout_ms		超时时间，单位: ms
- * @return					<0: TCP写入错误; =0: TCP写超时, 且没有写入任何数据; >0: TCP成功写入的字节数
+ * @param fd                TCP连接句柄
+ * @param buf               指向数据发送缓冲区的指针
+ * @param len               数据发送缓冲区的字节大小
+ * @param timeout_ms        超时时间，单位: ms
+ * @return                  <0: TCP写入错误; =0: TCP写超时, 且没有写入任何数据; >0: TCP成功写入的字节数
  */
 int32_t HAL_TCP_Write(_IN_ uintptr_t fd, _IN_ unsigned char *buf, _IN_ size_t len, _IN_ uint32_t timeout_ms);
 
 /**
  * @brief 从指定的TCP连接读取数据。此接口为同步接口, 如果在超时时间内读取到参数len指定长度的数据则立即返回, 否则在超时时间到时返回。
  *
- * @param fd				TCP连接句柄
- * @param buf				指向数据接收缓冲区的指针
- * @param len				数据接收缓冲区的字节大小
- * @param timeout_ms		超时时间，单位: ms
- * @return					<0: TCP读取错误; =0: TCP读超时, 且没有读取任何数据; >0: TCP成功读取的字节数
+ * @param fd                TCP连接句柄
+ * @param buf               指向数据接收缓冲区的指针
+ * @param len               数据接收缓冲区的字节大小
+ * @param timeout_ms        超时时间，单位: ms
+ * @return                  <0: TCP读取错误; =0: TCP读超时, 且没有读取任何数据; >0: TCP成功读取的字节数
  */
 int32_t HAL_TCP_Read(_IN_ uintptr_t fd, _OU_ unsigned char *buf, _IN_ size_t len, _IN_ uint32_t timeout_ms);
 

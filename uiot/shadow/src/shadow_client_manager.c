@@ -88,22 +88,22 @@ int uiot_shadow_init(UIoT_Shadow *pShadow)
     }
     else 
     {
-    	LOG_ERROR("no memory to allocate property_handle_list\n");
-    	FUNC_EXIT_RC(FAILURE_RET);
+        LOG_ERROR("no memory to allocate property_handle_list\n");
+        FUNC_EXIT_RC(FAILURE_RET);
     }
 
-	pShadow->inner_data.request_list = list_new();
-	if (pShadow->inner_data.request_list)
-	{
-		pShadow->inner_data.request_list->free = HAL_Free;
-	} 
+    pShadow->inner_data.request_list = list_new();
+    if (pShadow->inner_data.request_list)
+    {
+        pShadow->inner_data.request_list->free = HAL_Free;
+    } 
     else 
     {
-		LOG_ERROR("no memory to allocate request_list\n");
-		FUNC_EXIT_RC(FAILURE_RET);
-	}
+        LOG_ERROR("no memory to allocate request_list\n");
+        FUNC_EXIT_RC(FAILURE_RET);
+    }
 
-	FUNC_EXIT_RC(SUCCESS_RET);
+    FUNC_EXIT_RC(SUCCESS_RET);
 }
 
 
@@ -229,35 +229,35 @@ int uiot_shadow_make_request(UIoT_Shadow *pShadow,char *pJsonDoc, size_t sizeOfB
     ret = shadow_json_init(pJsonDoc, sizeOfBuffer, pParams);
     if (ret != SUCCESS_RET)
     {
-		goto end;
+        goto end;
     }
 
     ret = shadow_json_set_content(pJsonDoc, sizeOfBuffer, pParams);
     if (ret != SUCCESS_RET)
     {
-		goto end;
+        goto end;
     }
 
     ret = shadow_json_finalize(pShadow, pJsonDoc, sizeOfBuffer, pParams);
     if (ret != SUCCESS_RET)
     {
-		goto end;
+        goto end;
     }
 
-	LOG_DEBUG("jsonDoc: %s\n", pJsonDoc);
+    LOG_DEBUG("jsonDoc: %s\n", pJsonDoc);
 
     // 相应的 operation topic 订阅成功或已经订阅
     ret = uiot_shadow_publish_operation_to_cloud(pShadow, pParams->method, pJsonDoc);
     if (ret != SUCCESS_RET)
     {
-		goto end;
+        goto end;
     }
 
     // 向云平台发送成功更新请求后,根据请求同步更新本地属性
     ret = uiot_shadow_update_property(pShadow, pParams);
     if (ret != SUCCESS_RET)
     {
-		goto end;
+        goto end;
     }
 
 end:
@@ -270,7 +270,7 @@ int uiot_shadow_subscribe_topic(UIoT_Shadow *pShadow, char *topicFilter, OnMessa
     FUNC_ENTRY;
     
     int ret;
-	UIoT_Client *mqtt_client = (UIoT_Client *)pShadow->mqtt;
+    UIoT_Client *mqtt_client = (UIoT_Client *)pShadow->mqtt;
 
     char *topic_name = (char *)HAL_Malloc(MAX_SIZE_OF_CLOUD_TOPIC * sizeof(char));
     if (topic_name == NULL) 
@@ -279,7 +279,7 @@ int uiot_shadow_subscribe_topic(UIoT_Shadow *pShadow, char *topicFilter, OnMessa
         FUNC_EXIT_RC(FAILURE_RET);
     }
     memset(topic_name, 0x0, MAX_SIZE_OF_CLOUD_TOPIC);
-	HAL_Snprintf(topic_name, MAX_SIZE_OF_CLOUD_TOPIC, topicFilter, pShadow->product_sn, pShadow->device_sn);	
+    HAL_Snprintf(topic_name, MAX_SIZE_OF_CLOUD_TOPIC, topicFilter, pShadow->product_sn, pShadow->device_sn);    
     
     SubscribeParams subscribe_params = DEFAULT_SUB_PARAMS;
     subscribe_params.on_message_handler = on_message_handler;
@@ -302,7 +302,7 @@ static int uiot_shadow_publish_operation_to_cloud(UIoT_Shadow *pShadow, Method m
     int ret = SUCCESS_RET;
 
     char topic[MAX_SIZE_OF_CLOUD_TOPIC] = {0};
-	int size;
+    int size;
 
     if(GET == method)
     {
@@ -310,10 +310,10 @@ static int uiot_shadow_publish_operation_to_cloud(UIoT_Shadow *pShadow, Method m
     }
     else
     {
-    	size = HAL_Snprintf(topic, MAX_SIZE_OF_CLOUD_TOPIC, SHADOW_PUBLISH_REQUEST_TEMPLATE, pShadow->product_sn, pShadow->device_sn);	
+        size = HAL_Snprintf(topic, MAX_SIZE_OF_CLOUD_TOPIC, SHADOW_PUBLISH_REQUEST_TEMPLATE, pShadow->product_sn, pShadow->device_sn);    
     }
     
-	if (size < 0 || size > MAX_SIZE_OF_CLOUD_TOPIC - 1)
+    if (size < 0 || size > MAX_SIZE_OF_CLOUD_TOPIC - 1)
     {
         LOG_ERROR("buf size < topic length!\n");
         FUNC_EXIT_RC(FAILURE_RET);
@@ -342,7 +342,7 @@ static int uiot_shadow_unsubscribe_topic(UIoT_Shadow *pShadow, char *topicFilter
     POINTER_VALID_CHECK(topicFilter, ERR_PARAM_INVALID);
     
     int ret;
-	UIoT_Client *mqtt_client = (UIoT_Client *)pShadow->mqtt;
+    UIoT_Client *mqtt_client = (UIoT_Client *)pShadow->mqtt;
 
     char *topic_name = (char *)HAL_Malloc(MAX_SIZE_OF_CLOUD_TOPIC * sizeof(char));
     if (topic_name == NULL) 
@@ -351,7 +351,7 @@ static int uiot_shadow_unsubscribe_topic(UIoT_Shadow *pShadow, char *topicFilter
         FUNC_EXIT_RC(FAILURE_RET);
     }
     memset(topic_name, 0x0, MAX_SIZE_OF_CLOUD_TOPIC);
-	HAL_Snprintf(topic_name, MAX_SIZE_OF_CLOUD_TOPIC, topicFilter, pShadow->product_sn, pShadow->device_sn);	
+    HAL_Snprintf(topic_name, MAX_SIZE_OF_CLOUD_TOPIC, topicFilter, pShadow->product_sn, pShadow->device_sn);    
     
     ret = IOT_MQTT_Unsubscribe(mqtt_client, topic_name);
     if (ret < 0) 
@@ -427,7 +427,7 @@ static void _handle_delta(UIoT_Shadow *pShadow, char* delta_str)
 
     char *property_value = NULL;       
     RequestParams *pParams_property = NULL;    
-	char JsonDoc[CLOUD_IOT_JSON_RX_BUF_LEN];
+    char JsonDoc[CLOUD_IOT_JSON_RX_BUF_LEN];
     size_t sizeOfBuffer = sizeof(JsonDoc) / sizeof(JsonDoc[0]);
 
     if((UPDATE == cloud_send_method) 
@@ -564,15 +564,15 @@ static void _handle_request_callback(UIoT_Shadow *pShadow, ListNode **node, List
         bool parse_success = parse_shadow_payload_retcode_type(cloud_rcv_buf, &result_code);
         if (parse_success) 
         {
-        	if (result_code == 0) {
-    			status = ACK_ACCEPTED;
-    		} else {
-    			status = ACK_REJECTED;
-    		}
+            if (result_code == 0) {
+                status = ACK_ACCEPTED;
+            } else {
+                status = ACK_REJECTED;
+            }
         }
         else 
         {
-        	LOG_ERROR("parse shadow operation result code failed.\n");
+            LOG_ERROR("parse shadow operation result code failed.\n");
             status = ACK_REJECTED;
         }
     }
@@ -700,13 +700,13 @@ void topic_request_result_handler(void *pClient, MQTTMessage *message, void *pUs
         char* desired_str = NULL;
         if (parse_shadow_payload_state_desired_state(cloud_rcv_buf, &desired_str)) 
         {
-			LOG_DEBUG("desired:%s\n", desired_str);
+            LOG_DEBUG("desired:%s\n", desired_str);
             /* desired中的字段不为空 */
             if(strlen(desired_str) > 2)
             {
-            	_handle_delta(shadow_client, desired_str);
+                _handle_delta(shadow_client, desired_str);
             }
-        	HAL_Free(desired_str);
+            HAL_Free(desired_str);
         }
         
     }
@@ -759,10 +759,10 @@ void topic_sync_handler(void *pClient, MQTTMessage *message, void *pUserdata)
     LOG_DEBUG("get_reply:%s\n",cloud_rcv_buf);
 
     //同步返回消息中的version
-	uint32_t version_num = 0;
-	if (parse_version_num(cloud_rcv_buf, &version_num)) {
-		shadow_client->inner_data.version = version_num;
-	}
+    uint32_t version_num = 0;
+    if (parse_version_num(cloud_rcv_buf, &version_num)) {
+        shadow_client->inner_data.version = version_num;
+    }
     else
     {
         LOG_ERROR("Fail to parse version num!\n");
@@ -774,13 +774,13 @@ void topic_sync_handler(void *pClient, MQTTMessage *message, void *pUserdata)
     char* desired_str = NULL;
     if (parse_shadow_state_desired_type(cloud_rcv_buf, &desired_str)) 
     {
-		LOG_DEBUG("Desired part:%s\n", desired_str);
+        LOG_DEBUG("Desired part:%s\n", desired_str);
         /* desired中的字段不为空       */
         if(strlen(desired_str) > 2)
         {
-        	_handle_delta(shadow_client, desired_str);
+            _handle_delta(shadow_client, desired_str);
         }
-    	HAL_Free(desired_str);
+        HAL_Free(desired_str);
     }
 
     if (shadow_client != NULL)
@@ -949,19 +949,19 @@ static int shadow_json_set_content(char *pJsonDoc, size_t sizeOfBuffer, RequestP
  */
 static int shadow_json_finalize(UIoT_Shadow *pShadow, char *pJsonDoc, size_t sizeOfBuffer, RequestParams *pParams) 
 {
-	int ret;
-	size_t remain_size = 0;
-	int ret_of_snprintf = 0;
+    int ret;
+    size_t remain_size = 0;
+    int ret_of_snprintf = 0;
 
-	if (pJsonDoc == NULL) 
+    if (pJsonDoc == NULL) 
     {
-		return ERR_PARAM_INVALID;
-	}
+        return ERR_PARAM_INVALID;
+    }
 
-	if ((remain_size = sizeOfBuffer - strlen(pJsonDoc)) <= 1) 
+    if ((remain_size = sizeOfBuffer - strlen(pJsonDoc)) <= 1) 
     {
-		return ERR_JSON_BUFFER_TOO_SMALL;
-	}
+        return ERR_JSON_BUFFER_TOO_SMALL;
+    }
 
     switch(pParams->method)
     {
@@ -996,7 +996,7 @@ static int shadow_json_finalize(UIoT_Shadow *pShadow, char *pJsonDoc, size_t siz
     }
     ret = _check_snprintf_return(ret_of_snprintf, remain_size);
 
-	return ret;
+    return ret;
 }
 
 /**

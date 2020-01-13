@@ -222,8 +222,8 @@ int uiot_mqtt_yield(UIoT_Client *pClient, uint32_t timeout_ms) {
         }          
         else if (ret == ERR_SSL_READ_TIMEOUT || ret == ERR_SSL_READ_FAILED ||
                  ret == ERR_TCP_PEER_SHUTDOWN || ret == ERR_TCP_READ_FAILED){
-        	LOG_ERROR("network read failed, ret: %d. MQTT Disconnect.", ret);
-        	ret = _handle_disconnect(pClient);
+            LOG_ERROR("network read failed, ret: %d. MQTT Disconnect.", ret);
+            ret = _handle_disconnect(pClient);
         }
         else if(ret == FAILURE_RET) //最后一次读肯定失败,因为没有数据了
         {

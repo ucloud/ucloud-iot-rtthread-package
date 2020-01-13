@@ -38,16 +38,16 @@ typedef enum _QoS {
  * @brief 发布或接收已订阅消息的结构体定义
  */
 typedef struct {
-    QoS         			qos;          // MQTT 服务质量等级
-    uint8_t     			retained;     // RETAIN 标识位
-    uint8_t     			dup;          // DUP 标识位
-    uint16_t    			id;           // MQTT 消息标识符
+    QoS                     qos;          // MQTT 服务质量等级
+    uint8_t                 retained;     // RETAIN 标识位
+    uint8_t                 dup;          // DUP 标识位
+    uint16_t                id;           // MQTT 消息标识符
 
-    const char  			*topic;       // MQTT topic
-    size_t      			topic_len;    // topic 长度
+    const char              *topic;       // MQTT topic
+    size_t                  topic_len;    // topic 长度
 
-    void        			*payload;     // MQTT 消息负载
-    size_t      			payload_len;  // MQTT 消息负载长度
+    void                    *payload;     // MQTT 消息负载
+    size_t                  payload_len;  // MQTT 消息负载长度
 } MQTTMessage;
 
 typedef MQTTMessage PublishParams;
@@ -137,20 +137,20 @@ typedef struct {
 } MQTTEventHandler;
 
 typedef struct {
-	/**
-	 * 设备基础信息
-	 */
-    char 						*product_sn;	         // 产品序列号
-    char 						*device_sn;			     // 设备序列号
+    /**
+     * 设备基础信息
+     */
+    char                        *product_sn;             // 产品序列号
+    char                        *device_sn;              // 设备序列号
     char                        *product_secret;         // 产品密钥 用于动态注册,不填则认为是静态注册
     char                        *device_secret;          // 设备密钥 用于静态注册，动态注册时可以不填
 
-    uint32_t					command_timeout;		 // 发布订阅信令读写超时时间 ms
-    uint32_t					keep_alive_interval;	 // 心跳周期, 单位: s
+    uint32_t                    command_timeout;         // 发布订阅信令读写超时时间 ms
+    uint32_t                    keep_alive_interval;     // 心跳周期, 单位: s
 
-    uint8_t         			clean_session;			 // 清理会话标志位
+    uint8_t                     clean_session;           // 清理会话标志位
 
-    uint8_t                   	auto_connect_enable;     // 是否开启自动重连 1:启用自动重连 0：不启用自动重连  建议为1
+    uint8_t                     auto_connect_enable;     // 是否开启自动重连 1:启用自动重连 0：不启用自动重连  建议为1
 
     MQTTEventHandler            event_handler;           // 事件回调
 

@@ -131,11 +131,11 @@ typedef enum {
 
 #ifdef ENABLE_LOG_DEBUG
 #define LOG_DEBUG(...)    \
-	{\
-	HAL_Printf("DEBUG:   %s L#%d ", __func__, __LINE__);  \
-	HAL_Printf(__VA_ARGS__); \
-	HAL_Printf("\n"); \
-	}
+    {\
+    HAL_Printf("DEBUG:   %s L#%d ", __func__, __LINE__);  \
+    HAL_Printf(__VA_ARGS__); \
+    HAL_Printf("\n"); \
+    }
 #else
 #define LOG_DEBUG(...)
 #endif
@@ -147,10 +147,10 @@ typedef enum {
  */
 #ifdef ENABLE_LOG_INFO
 #define LOG_INFO(...)    \
-	{\
-	HAL_Printf(__VA_ARGS__); \
-	HAL_Printf("\n"); \
-	}
+    {\
+    HAL_Printf(__VA_ARGS__); \
+    HAL_Printf("\n"); \
+    }
 #else
 #define LOG_INFO(...)
 #endif
@@ -162,11 +162,11 @@ typedef enum {
  */
 #ifdef ENABLE_LOG_WARN
 #define LOG_WARN(...)   \
-	{ \
-	HAL_Printf("WARN:  %s L#%d ", __func__, __LINE__);  \
-	HAL_Printf(__VA_ARGS__); \
-	HAL_Printf("\n"); \
-	}
+    { \
+    HAL_Printf("WARN:  %s L#%d ", __func__, __LINE__);  \
+    HAL_Printf(__VA_ARGS__); \
+    HAL_Printf("\n"); \
+    }
 #else
 #define LOG_WARN(...)
 #endif
@@ -178,30 +178,30 @@ typedef enum {
  */
 #ifdef ENABLE_LOG_ERROR
 #define LOG_ERROR(...)  \
-	{ \
-	HAL_Printf("ERROR: %s L#%d ", __func__, __LINE__); \
-	HAL_Printf(__VA_ARGS__); \
-	HAL_Printf("\n"); \
-	}
+    { \
+    HAL_Printf("ERROR: %s L#%d ", __func__, __LINE__); \
+    HAL_Printf(__VA_ARGS__); \
+    HAL_Printf("\n"); \
+    }
 #else
 #define LOG_ERROR(...)
 #endif
 
 #ifdef ENABLE_IOT_TRACE
 #define FUNC_ENTRY    \
-	{\
-	HAL_Printf("FUNC_ENTRY:   %s L#%d \n", __func__, __LINE__);  \
-	}
+    {\
+    HAL_Printf("FUNC_ENTRY:   %s L#%d \n", __func__, __LINE__);  \
+    }
 #define FUNC_EXIT    \
-	{\
-	HAL_Printf("FUNC_EXIT:   %s L#%d \n", __func__, __LINE__);  \
-	return; \
-	}
+    {\
+    HAL_Printf("FUNC_EXIT:   %s L#%d \n", __func__, __LINE__);  \
+    return; \
+    }
 #define FUNC_EXIT_RC(x)    \
-	{\
-	HAL_Printf("FUNC_EXIT:   %s L#%d Return Code : %d \n", __func__, __LINE__, x);  \
-	return x; \
-	}
+    {\
+    HAL_Printf("FUNC_EXIT:   %s L#%d Return Code : %d \n", __func__, __LINE__, x);  \
+    return x; \
+    }
 #else
 #define FUNC_ENTRY
 

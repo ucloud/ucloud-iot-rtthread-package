@@ -28,21 +28,21 @@
 
 
 typedef struct  {
-    uint32_t 				id;                		/* message id */
-    IOT_OTA_State 		    state;   				/* OTA state */
-    uint32_t 				size_last_fetched; 		/* size of last downloaded */
-    uint32_t 				size_fetched;      		/* size of already downloaded */
-    uint32_t 				size_file;         		/* size of file */
+    uint32_t                id;                      /* message id */
+    IOT_OTA_State           state;                   /* OTA state */
+    uint32_t                size_last_fetched;       /* size of last downloaded */
+    uint32_t                size_fetched;            /* size of already downloaded */
+    uint32_t                size_file;               /* size of file */
 
-    char 					*url;                 	/* point to URL */
-    char 					*version;              	/* point to version */
-    char 					*md5sum;            	/* MD5 string */
+    char                    *url;                    /* point to URL */
+    char                    *version;                /* point to version */
+    char                    *md5sum;                 /* MD5 string */
 
-    void 					*md5;                  	/* MD5 handle */
-    void 					*ch_signal;           	/* channel handle of signal exchanged with OTA server */
-    void 					*ch_fetch;             	/* channel handle of download */
+    void                    *md5;                    /* MD5 handle */
+    void                    *ch_signal;              /* channel handle of signal exchanged with OTA server */
+    void                    *ch_fetch;               /* channel handle of download */
 
-    int 					err;                    /* last error code */
+    int                     err;                     /* last error code */
 
     Timer                   report_timer;
 } OTA_Struct_t;
