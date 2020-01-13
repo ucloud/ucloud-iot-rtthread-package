@@ -561,9 +561,9 @@ static int _read_mqtt_packet(UIoT_Client *pClient, Timer *timer, uint8_t *packet
     uint32_t rem_len = 0;
     int read_len = 0;
     int ret;
-	int timer_left_ms = left_ms(timer);
-	
-	if (timer_left_ms <= 0) {
+    int timer_left_ms = left_ms(timer);
+    
+    if (timer_left_ms <= 0) {
         timer_left_ms = 1;
     }
 
@@ -578,12 +578,12 @@ static int _read_mqtt_packet(UIoT_Client *pClient, Timer *timer, uint8_t *packet
     len = 1;
 
     // 2. 读取报文固定头部剩余长度部分
-	timer_left_ms = left_ms(timer);
+    timer_left_ms = left_ms(timer);
     if (timer_left_ms <= 0) {
         timer_left_ms = 1;
     }
     timer_left_ms += UIOT_MQTT_MAX_REMAIN_WAIT_MS; //确保一包MQTT报文接收完
-	
+    
     ret = _decode_packet_rem_len_with_net_read(pClient, &rem_len, timer_left_ms);
     if (SUCCESS_RET != ret) {
         return ret;
@@ -594,7 +594,7 @@ static int _read_mqtt_packet(UIoT_Client *pClient, Timer *timer, uint8_t *packet
         size_t total_bytes_read = 0;
         size_t bytes_to_be_read;
 
-		timer_left_ms = left_ms(timer);
+        timer_left_ms = left_ms(timer);
         if (timer_left_ms <= 0) {
             timer_left_ms = 1;
         }
@@ -622,24 +622,24 @@ static int _read_mqtt_packet(UIoT_Client *pClient, Timer *timer, uint8_t *packet
 
     // 3. 读取报文的剩余部分数据
     if (rem_len > 0 && ((len + rem_len) > pClient->read_buf_size)) {
-		
-		timer_left_ms = left_ms(timer);
+        
+        timer_left_ms = left_ms(timer);
         if (timer_left_ms <= 0) {
             timer_left_ms = 1;
         }
         timer_left_ms += UIOT_MQTT_MAX_REMAIN_WAIT_MS;
-	
-    	pClient->network_stack.read(&(pClient->network_stack), pClient->read_buf, rem_len, timer_left_ms);
-    	return ERR_MQTT_BUFFER_TOO_SHORT;
+    
+        pClient->network_stack.read(&(pClient->network_stack), pClient->read_buf, rem_len, timer_left_ms);
+        return ERR_MQTT_BUFFER_TOO_SHORT;
     } else {
         if (rem_len > 0) {
 
-			timer_left_ms = left_ms(timer);
-	        if (timer_left_ms <= 0) {
-	            timer_left_ms = 1;
-	        }
-	        timer_left_ms += UIOT_MQTT_MAX_REMAIN_WAIT_MS;
-        	read_len = pClient->network_stack.read(&(pClient->network_stack), pClient->read_buf + len, rem_len, timer_left_ms);
+            timer_left_ms = left_ms(timer);
+            if (timer_left_ms <= 0) {
+                timer_left_ms = 1;
+            }
+            timer_left_ms += UIOT_MQTT_MAX_REMAIN_WAIT_MS;
+            read_len = pClient->network_stack.read(&(pClient->network_stack), pClient->read_buf + len, rem_len, timer_left_ms);
             if (read_len < 0) {
                 return read_len;
             } else if (read_len == 0) {
@@ -1115,11 +1115,11 @@ static int _handle_publish_packet(UIoT_Client *pClient, Timer *timer) {
     
     // 传过来的topicName没有截断，会把payload也带过来
     char fix_topic[MAX_SIZE_OF_CLOUD_TOPIC] = {0};
-	
-	if(topic_len > MAX_SIZE_OF_CLOUD_TOPIC){
-		topic_len = MAX_SIZE_OF_CLOUD_TOPIC - 1;
-		LOG_ERROR("topic len exceed buffer len");
-	}
+    
+    if(topic_len > MAX_SIZE_OF_CLOUD_TOPIC){
+        topic_len = MAX_SIZE_OF_CLOUD_TOPIC - 1;
+        LOG_ERROR("topic len exceed buffer len");
+    }
     memcpy(fix_topic, topic_name, topic_len);
 
     if (QOS0 == msg.qos)
@@ -1297,21 +1297,21 @@ int cycle_for_read(UIoT_Client *pClient, Timer *timer, uint8_t *packet_type, QoS
 }
 
 int wait_for_read(UIoT_Client *pClient, uint8_t packet_type, Timer *timer, QoS qos) {
-	int ret;
-	uint8_t read_packet_type = 0;
+    int ret;
+    uint8_t read_packet_type = 0;
 
-	POINTER_VALID_CHECK(pClient, ERR_PARAM_INVALID);
-	POINTER_VALID_CHECK(timer, ERR_PARAM_INVALID);
+    POINTER_VALID_CHECK(pClient, ERR_PARAM_INVALID);
+    POINTER_VALID_CHECK(timer, ERR_PARAM_INVALID);
 
-	do {
-		if (has_expired(timer)) {
-			ret = ERR_MQTT_REQUEST_TIMEOUT;
-			break;
-		}
-		ret = cycle_for_read(pClient, timer, &read_packet_type, qos);
-	} while (SUCCESS_RET == ret && read_packet_type != packet_type );
+    do {
+        if (has_expired(timer)) {
+            ret = ERR_MQTT_REQUEST_TIMEOUT;
+            break;
+        }
+        ret = cycle_for_read(pClient, timer, &read_packet_type, qos);
+    } while (SUCCESS_RET == ret && read_packet_type != packet_type );
 
-	return ret;
+    return ret;
 }
 
 void set_client_conn_state(UIoT_Client *pClient, uint8_t connected) {
@@ -1321,10 +1321,10 @@ void set_client_conn_state(UIoT_Client *pClient, uint8_t connected) {
 }
 
 uint8_t get_client_conn_state(UIoT_Client *pClient) {
-	uint8_t is_connected = 0;
-	HAL_MutexLock(pClient->lock_generic);
-	is_connected = pClient->is_connected;
-	HAL_MutexUnlock(pClient->lock_generic);
+    uint8_t is_connected = 0;
+    HAL_MutexLock(pClient->lock_generic);
+    is_connected = pClient->is_connected;
+    HAL_MutexUnlock(pClient->lock_generic);
     return is_connected;
 }
 
