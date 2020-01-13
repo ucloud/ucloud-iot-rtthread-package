@@ -222,14 +222,19 @@ static void mqtt_test_thread(void) {
     do {
         // 等待订阅结果
         if (sg_sub_packet_id > 0) {
-            rc = _publish_msg(client);
-            if (rc < 0) {
-                HAL_Printf("client publish topic failed :%d.", rc);
-            }
+            for(int loop = 0; loop < 10; loop++)
+            {
+                rc = _publish_msg(client);
+                if (rc < 0) {
+                    HAL_Printf("client publish topic failed :%d.", rc);
+                }
 
-            rc = IOT_MQTT_Yield(client, 200);
+                rc = IOT_MQTT_Yield(client, 200);
+            }
         }
-    } while (running_state == 1);
+    } while (sg_sub_packet_id < 0);
+
+    IOT_MQTT_Destroy(&client);
     return;
 }
 
