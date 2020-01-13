@@ -53,7 +53,7 @@ void RegCallback_hold(void *pClient, RequestParams *pParams, char *pJsonValueBuf
 
 static void _update_ack_cb(void *pClient, Method method, RequestAck requestAck, const char *pReceivedJsonDocument, void *pUserdata) 
 {
-	LOG_DEBUG("requestAck=%d\n", requestAck);
+    LOG_DEBUG("requestAck=%d\n", requestAck);
 
     if (NULL != pReceivedJsonDocument) {
         LOG_DEBUG("Received Json Document=%s\n", pReceivedJsonDocument);
@@ -76,13 +76,19 @@ static void _update_ack_cb(void *pClient, Method method, RequestAck requestAck, 
 static int _setup_connect_init_params(MQTTInitParams* initParams)
 {
     int ret = SUCCESS_RET;
-	initParams->device_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
-	initParams->product_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
-	initParams->device_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
-
-	initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;
-	initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
-	initParams->auto_connect_enable = 1;
+    initParams->device_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
+    initParams->product_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
+#ifdef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
+    initParams->product_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SECRET;
+    char device_secret_tmp[IOT_DEVICE_SN_LEN + 1];
+    HAL_GetDeviceSecret(device_secret_tmp);
+    initParams->device_secret = device_secret_tmp;
+#else    
+    initParams->device_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
+#endif
+    initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;
+    initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
+    initParams->auto_connect_enable = 1;
 
     return ret;
 }
@@ -120,7 +126,7 @@ static void shadow_test_thread(void)
     }
     
     int time_sec = MAX_WAIT_TIME_SEC;
-	RequestAck ack_update = ACK_NONE;
+    RequestAck ack_update = ACK_NONE;
 
     DeviceProperty *Property1 = (DeviceProperty *)HAL_Malloc(sizeof(DeviceProperty));
     int32_t num1 = 18;
@@ -208,7 +214,7 @@ static void shadow_test_thread(void)
         return;
     }
 
-	while (ACK_NONE == ack_update) {
+    while (ACK_NONE == ack_update) {
         IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
     }
    
@@ -221,104 +227,17 @@ static void shadow_test_thread(void)
         return;
     }
     
-	while (ACK_NONE == ack_update) {
+    while (ACK_NONE == ack_update) {
         IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
     }
 
     ack_update = ACK_NONE;
     ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
 
-	while (ACK_NONE == ack_update) {
+    while (ACK_NONE == ack_update) {
         IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-#if 0
-    /* update */    
-    num1 = 123;
-    Property1->data = &num1;
-
-    char num9[5] = "num9";
-    Property4->data = num9;
-
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Update(sg_pshadow, _update_ack_cb, time_sec, &ack_update, 2, Property1, Property4);
-    if(SUCCESS_RET != ret)
-    {
-        HAL_Printf("Update Property1 Property4 fail:%d\n", ret);
-        return ret;
     }
     
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-
-    /* delete */    
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Delete(sg_pshadow, _update_ack_cb, time_sec, &ack_update, 2, Property1, Property2);
-    if(SUCCESS_RET != ret)
-    {
-        HAL_Printf("Delete Property1 Property2 fail:%d\n", ret);
-        return ret;
-    }
-
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
-
-
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-
-    /* delete all */
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Delete_All(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
-    if(SUCCESS_RET != ret)
-    {
-        HAL_Printf("Delete All fail:%d\n", ret);
-        return ret;
-    }
-
-
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
-
-
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-
-    Property1->data = &num1;
-    Property4->data = num4;
-    Property5->data = &num5;
-    Property6->data = num6;
-
-    /* update */    
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Update_And_Reset_Version(sg_pshadow, _update_ack_cb, time_sec, &ack_update, 4, Property1, Property4, Property5, Property6);
-    if(SUCCESS_RET != ret)
-    {
-        HAL_Printf("Update and Reset Ver fail:%d\n", ret);
-        return ret;
-    }
-    
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-
-    ack_update = ACK_NONE;
-    ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
-
-	while (ACK_NONE == ack_update) {
-        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
-    }
-#endif
     HAL_Free(Property1);
     HAL_Free(Property2);
     HAL_Free(Property3);
@@ -336,40 +255,40 @@ static int shadow_test_example(int argc, char **argv)
     rt_thread_t tid;
     int stack_size = 8192;
 
-	if (2 == argc)
-	{
-		if (!strcmp("start", argv[1]))
-		{
-			if (1 == running_state)
-			{
-				HAL_Printf("shadow_test_example is already running\n");
-				return 0;
-			}			
-		}
-		else if (!strcmp("stop", argv[1]))
-		{
-			if (0 == running_state)
-			{
-				HAL_Printf("shadow_test_example is already stopped\n");
-				return 0;
-			}
-			running_state = 0;
-			return 0;
-		}
-		else
-		{
-			HAL_Printf("Usage: shadow_test_example start/stop");
-			return 0;			  
-		}
-	}
-	else
-	{
-		HAL_Printf("Para err, usage: shadow_test_example start/stop");
-		return 0;
-	}
-	
-	tid = rt_thread_create("shadow_test", (void (*)(void *))shadow_test_thread, 
-							NULL, stack_size, RT_THREAD_PRIORITY_MAX / 2 - 1, 100);  
+    if (2 == argc)
+    {
+        if (!strcmp("start", argv[1]))
+        {
+            if (1 == running_state)
+            {
+                HAL_Printf("shadow_test_example is already running\n");
+                return 0;
+            }            
+        }
+        else if (!strcmp("stop", argv[1]))
+        {
+            if (0 == running_state)
+            {
+                HAL_Printf("shadow_test_example is already stopped\n");
+                return 0;
+            }
+            running_state = 0;
+            return 0;
+        }
+        else
+        {
+            HAL_Printf("Usage: shadow_test_example start/stop");
+            return 0;              
+        }
+    }
+    else
+    {
+        HAL_Printf("Para err, usage: shadow_test_example start/stop");
+        return 0;
+    }
+    
+    tid = rt_thread_create("shadow_test", (void (*)(void *))shadow_test_thread, 
+                            NULL, stack_size, RT_THREAD_PRIORITY_MAX / 2 - 1, 100);  
 
     if (tid != RT_NULL)
     {

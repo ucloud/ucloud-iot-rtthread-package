@@ -128,45 +128,45 @@ void LITE_json_keys_release(list_head_t *keylist)
 }
 
 int LITE_get_int32(int32_t *value, char *src) {
-	return (sscanf(src, "%" SCNi32, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%" SCNi32, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_int16(int16_t *value, char *src) {
-	return (sscanf(src, "%" SCNi16, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%" SCNi16, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_int8(int8_t *value, char *src) {
-	return (sscanf(src, "%" SCNi8, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%" SCNi8, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_uint32(uint32_t *value, char *src) {
-	return (sscanf(src, "%" SCNu32, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%" SCNu32, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_uint16(uint16_t *value, char *src) {
-	return (sscanf(src, "%" SCNu16, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%" SCNu16, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_uint8(uint8_t *value, char *src) {
-	return (sscanf(src, "%" SCNu8, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%" SCNu8, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_float(float *value, char *src) {
-	return (sscanf(src, "%f", value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%f", value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_double(double *value, char *src) {
-	return (sscanf(src, "%lf", value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    return (sscanf(src, "%lf", value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
 int LITE_get_boolean(bool *value, char *src) {
-	if (!strcmp(src, "0")) {
-		*value = false;
-	}
-	else {
-		*value = true;
-	}
+    if (!strcmp(src, "0")) {
+        *value = false;
+    }
+    else {
+        *value = true;
+    }
 
-	return SUCCESS_RET;
+    return SUCCESS_RET;
 }
 

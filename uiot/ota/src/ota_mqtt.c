@@ -25,11 +25,11 @@
 
 /* OSC, OTA signal channel */
 typedef struct  {
-    void 					*mqtt;
-    const char 				*product_sn;
-    const char 				*device_sn;
-    char 					topic_upgrade[OTA_TOPIC_BUF_LEN];
-    OnOTAMessageCallback 	msg_callback;
+    void                    *mqtt;
+    const char              *product_sn;
+    const char              *device_sn;
+    char                    topic_upgrade[OTA_TOPIC_BUF_LEN];
+    OnOTAMessageCallback    msg_callback;
     void                    *context;
 } OTA_MQTT_Struct_t;
 

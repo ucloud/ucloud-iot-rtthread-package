@@ -34,12 +34,12 @@ static int _read_string_with_len(char **string, uint16_t *stringLen, unsigned ch
     /* enough length to read the integer? */
     if (enddata - (*pptr) > 1) {
         *stringLen = mqtt_read_uint16_t(pptr); /* increments pptr to point past length */
-		
-		if(*stringLen > UIOT_MQTT_RX_BUF_LEN){
-			LOG_ERROR("stringLen exceed UIOT_MQTT_RX_BUF_LEN");
-			return FAILURE_RET;
-		}
-		
+        
+        if(*stringLen > UIOT_MQTT_RX_BUF_LEN){
+            LOG_ERROR("stringLen exceed UIOT_MQTT_RX_BUF_LEN");
+            return FAILURE_RET;
+        }
+        
         if (&(*pptr)[*stringLen] <= enddata) {
             *string = (char *) *pptr;
             *pptr += *stringLen;
@@ -321,7 +321,7 @@ int uiot_mqtt_publish(UIoT_Client *pClient, char *topicName, PublishParams *pPar
     ret = _serialize_publish_packet(pClient->write_buf, pClient->write_buf_size, 0, pParams->qos, pParams->retained, pParams->id,
                                    topicName, (unsigned char *) pParams->payload, pParams->payload_len, &len);
     if (SUCCESS_RET != ret) {
-    	HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_MutexUnlock(pClient->lock_write_buf);
         return ret;
     }
 
@@ -336,18 +336,18 @@ int uiot_mqtt_publish(UIoT_Client *pClient, char *topicName, PublishParams *pPar
 
     /* send the publish packet */
     ret = send_mqtt_packet(pClient, len, &timer);
-	if (SUCCESS_RET != ret) {
-		if (pParams->qos > QOS0) {
-			HAL_MutexLock(pClient->lock_list_pub);
-			list_remove(pClient->list_pub_wait_ack, node);
-			HAL_MutexUnlock(pClient->lock_list_pub);
-		}
+    if (SUCCESS_RET != ret) {
+        if (pParams->qos > QOS0) {
+            HAL_MutexLock(pClient->lock_list_pub);
+            list_remove(pClient->list_pub_wait_ack, node);
+            HAL_MutexUnlock(pClient->lock_list_pub);
+        }
 
-		HAL_MutexUnlock(pClient->lock_write_buf);
-		return ret;
-	}
+        HAL_MutexUnlock(pClient->lock_write_buf);
+        return ret;
+    }
 
-	HAL_MutexUnlock(pClient->lock_write_buf);
+    HAL_MutexUnlock(pClient->lock_write_buf);
 
     return pParams->id;
 }

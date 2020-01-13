@@ -146,8 +146,8 @@ int uiot_mqtt_unsubscribe(UIoT_Client *pClient, char *topicFilter) {
     ret = _serialize_unsubscribe_packet(pClient->write_buf, pClient->write_buf_size, 0, packet_id, 1, &topic_filter_stored,
                                        &len);
     if (SUCCESS_RET != ret) {
-    	HAL_MutexUnlock(pClient->lock_write_buf);
-    	HAL_Free(topic_filter_stored);
+        HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_Free(topic_filter_stored);
         return ret;
     }
 
@@ -171,8 +171,8 @@ int uiot_mqtt_unsubscribe(UIoT_Client *pClient, char *topicFilter) {
         list_remove(pClient->list_sub_wait_ack, node);
         HAL_MutexUnlock(pClient->lock_list_sub);
 
-    	HAL_MutexUnlock(pClient->lock_write_buf);
-    	HAL_Free(topic_filter_stored);
+        HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_Free(topic_filter_stored);
         return ret;
     }
 

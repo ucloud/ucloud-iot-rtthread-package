@@ -135,8 +135,8 @@ int uiot_mqtt_subscribe(UIoT_Client *pClient, char *topicFilter, SubscribeParams
     ret = _serialize_subscribe_packet(pClient->write_buf, pClient->write_buf_size, 0, packet_id, 1, &topic_filter_stored,
                                      &pParams->qos, &len);
     if (SUCCESS_RET != ret) {
-    	HAL_MutexUnlock(pClient->lock_write_buf);
-    	HAL_Free(topic_filter_stored);
+        HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_Free(topic_filter_stored);
         return ret;
     }
 
@@ -162,8 +162,8 @@ int uiot_mqtt_subscribe(UIoT_Client *pClient, char *topicFilter, SubscribeParams
         list_remove(pClient->list_sub_wait_ack, node);
         HAL_MutexUnlock(pClient->lock_list_sub);
 
-    	HAL_MutexUnlock(pClient->lock_write_buf);
-    	HAL_Free(topic_filter_stored);
+        HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_Free(topic_filter_stored);
         return ret;
     }
 
@@ -196,7 +196,7 @@ int uiot_mqtt_resubscribe(UIoT_Client *pClient) {
 
         ret = uiot_mqtt_subscribe(pClient, topic, &temp_param);
         if (ret < 0) {
-        	LOG_ERROR("resubscribe failed %d, topic: %s", ret, topic);
+            LOG_ERROR("resubscribe failed %d, topic: %s", ret, topic);
             return ret;
         }
     }

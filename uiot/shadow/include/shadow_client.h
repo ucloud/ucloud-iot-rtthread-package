@@ -85,7 +85,7 @@ typedef enum {
  * @brief 定义设备的某个属性, 实际就是一个JSON文档节点
  */
 typedef struct _JSONNode {
-    char   		 *key;    // 该JSON节点的Key
+    char         *key;    // 该JSON节点的Key
     void         *data;   // 该JSON节点的Value
     JsonDataType type;    // 该JSON节点的数据类型
 } DeviceProperty;
@@ -106,15 +106,15 @@ typedef void (*OnRequestCallback)(void *pClient, Method method, RequestAck reque
  * @brief 文档操作请求的参数结构体定义
  */
 typedef struct _RequestParam {
-    Method               	method;              	// 文档请求方式: GET, UPDATE, DELETE等
+    Method                   method;                // 文档请求方式: GET, UPDATE, DELETE等
 
     List                    *property_delta_list;   // 该请求需要修改的属性
 
-    uint32_t             	timeout_sec;         	// 请求超时时间, 单位:s
+    uint32_t                 timeout_sec;           // 请求超时时间, 单位:s
 
-    OnRequestCallback    	request_callback;    	// 请求回调方法
+    OnRequestCallback        request_callback;      // 请求回调方法
 
-    void                 	*user_context;          // 用户数据, 会通过回调方法OnRequestCallback返回
+    void                     *user_context;         // 用户数据, 会通过回调方法OnRequestCallback返回
 
 } RequestParams;
 
@@ -134,7 +134,7 @@ typedef void (*OnPropRegCallback)(void *pClient, RequestParams *pParams, char *p
  */
 typedef struct {
 
-    void *property;					 // 设备属性
+    void *property;                  // 设备属性
 
     OnPropRegCallback callback;      // 回调处理函数
 
@@ -159,7 +159,7 @@ typedef struct _Shadow {
  * @brief 设备影子初始化
  *
  * @param pShadow       shadow client
- * @return         		返回SUCCESS, 表示成功
+ * @return              返回SUCCESS, 表示成功
  */
 int uiot_shadow_init(UIoT_Shadow *pShadow);
 
@@ -167,7 +167,7 @@ int uiot_shadow_init(UIoT_Shadow *pShadow);
  * @brief 设备影子重置,主要是将设备影子中的队列归零
  *
  * @param pClient       shadow client
- * @return         		返回SUCCESS, 表示成功
+ * @return              返回SUCCESS, 表示成功
  */
 void uiot_shadow_reset(void *pClient);
 
@@ -182,10 +182,10 @@ void _handle_expired_request(UIoT_Shadow *pShadow);
  * @brief 所有的云端设备文档操作请求, 通过该方法进行中转分发
  *
  * @param pShadow       shadow client
- * @param pParams  		请求参数
- * @param pJsonDoc 		请求文档
- * @param sizeOfBuffer 	文档缓冲区大小
- * @return         		返回SUCCESS, 表示成功
+ * @param pParams       请求参数
+ * @param pJsonDoc      请求文档
+ * @param sizeOfBuffer  文档缓冲区大小
+ * @return              返回SUCCESS, 表示成功
  */
 int uiot_shadow_make_request(UIoT_Shadow *pShadow,char *pJsonDoc, size_t sizeOfBuffer, RequestParams *pParams);
 
@@ -194,8 +194,8 @@ int uiot_shadow_make_request(UIoT_Shadow *pShadow,char *pJsonDoc, size_t sizeOfB
  *
  * @param pShadow                   shadow client
  * @param topicFilter               topic的名称
- * @param on_message_handler 		topic的消息回调函数
- * @return         		返回SUCCESS, 表示成功
+ * @param on_message_handler        topic的消息回调函数
+ * @return                 返回SUCCESS, 表示成功
  */
 int uiot_shadow_subscribe_topic(UIoT_Shadow *pShadow, char *topicFilter, OnMessageHandler on_message_handler);
 
@@ -213,7 +213,7 @@ void* uiot_shadow_request_init(Method method, OnRequestCallback request_callback
  * @brief 从服务端获取设备影子文档
  *
  * @param handle        shadow handle
- * @param message  	    返回的消息
+ * @param message       返回的消息
  * @param pUserdata     跟随回调函数返回
  */
 void topic_request_result_handler(void *pClient, MQTTMessage *message, void *pUserdata);
@@ -222,7 +222,7 @@ void topic_request_result_handler(void *pClient, MQTTMessage *message, void *pUs
  * @brief 从服务端获取设备影子文档
  *
  * @param handle        shadow handle
- * @param message  	    返回的消息
+ * @param message       返回的消息
  * @param pUserdata     跟随回调函数返回
  */
 void topic_sync_handler(void *pClient, MQTTMessage *message, void *pUserdata);

@@ -21,7 +21,7 @@ extern "C" {
 
 #include <stdlib.h>
 
-#ifdef SUPPORT_TLS
+#ifdef PKG_USING_UCLOUD_TLS
 static const char *iot_ca_crt = \
 {
     "-----BEGIN CERTIFICATE-----\r\n"
@@ -115,7 +115,7 @@ static const char *iot_https_ca_crt = \
 #endif
 
 const char *iot_ca_get() {
-#ifdef SUPPORT_TLS
+#ifdef PKG_USING_UCLOUD_TLS
     return iot_ca_crt;
 #else
     return NULL;
@@ -123,7 +123,7 @@ const char *iot_ca_get() {
 }
 
 const char *iot_https_ca_get() {
-#ifdef SUPPORT_TLS
+#ifdef PKG_USING_UCLOUD_TLS
     return iot_https_ca_crt;
 #else
     return NULL;

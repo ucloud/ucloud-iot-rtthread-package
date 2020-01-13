@@ -59,7 +59,7 @@ int32_t ofc_connect(void *handle)
 
     OTA_Http_Client * h_ofc = (OTA_Http_Client *)handle;
 
-#ifdef SUPPORT_TLS
+#ifdef PKG_USING_UCLOUD_TLS
     int port = 443;
     const char *ca_crt = iot_https_ca_get();
 #else

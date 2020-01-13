@@ -117,13 +117,6 @@ uintptr_t HAL_TCP_Connect(_IN_ const char *host, _IN_ uint16_t port) {
 int32_t HAL_TCP_Disconnect(_IN_ uintptr_t fd) {
     int rc;
 
-    /* Shutdown both send and receive operations. */
-    rc = shutdown((int) fd, 2);
-    if (0 != rc) {
-        printf("shutdown error\n");
-        return FAILURE_RET;
-    }
-
     rc = close((int) fd);
     if (0 != rc) {
         printf("close socket error\n");

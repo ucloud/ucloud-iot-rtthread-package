@@ -38,8 +38,7 @@ if GetDepend(['PKG_USING_UCLOUD_MQTT']):
 	SrcRemove(src_base, 'uiot/utils/utils_sha2.c')		
 
 #enable dynamic auth
-if GetDepend(['PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH']):
-	CPPDEFINES += ['AUTH_MODE_DYNAMIC']
+#if GetDepend(['PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH']):
 
 #Gen shadow src file
 if GetDepend(['PKG_USING_UCLOUD_SHADOW']):
@@ -57,7 +56,7 @@ if GetDepend(['PKG_USING_UCLOUD_OTA']):
 if GetDepend(['PKG_USING_UCLOUD_TLS']):
 	src_base += Glob('uiot/certs/ca.c')
 	src_base += Glob('ports/ssl/HAL_TLS_mbedtls.c')
-	CPPDEFINES += ['SUPPORT_TLS', 'MBEDTLS_CONFIG_FILE=<HAL_TLS_config.h>']	
+	CPPDEFINES += ['MBEDTLS_CONFIG_FILE=<HAL_TLS_config.h>']	
 
 #Hub C-SDK core
 group = DefineGroup('ucloud_iot_sdk', src_base, depend = ['PKG_USING_UCLOUD_IOT_SDK'], CPPPATH = CPPPATH, LOCAL_CCFLAGS = LOCAL_CCFLAGS, CPPDEFINES = CPPDEFINES)

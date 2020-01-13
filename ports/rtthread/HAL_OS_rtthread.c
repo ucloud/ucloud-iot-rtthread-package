@@ -77,7 +77,7 @@ void HAL_Free(_IN_ void *ptr)
 void HAL_Printf(_IN_ const char *fmt, ...) 
 {
     va_list args;
-	char log_buf[HAL_OS_LOG_MAXLEN];
+    char log_buf[HAL_OS_LOG_MAXLEN];
     
     va_start(args, fmt);
     rt_vsnprintf(log_buf, HAL_OS_LOG_MAXLEN, fmt, args);

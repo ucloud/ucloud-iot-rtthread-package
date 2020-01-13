@@ -75,8 +75,8 @@ static uint32_t _get_packet_connect_rem_len(MQTTConnectParams *options) {
 }
 
 static void _copy_connect_params(MQTTConnectParams *destination, MQTTConnectParams *source) {
-	POINTER_VALID_CHECK_RTN(destination);
-	POINTER_VALID_CHECK_RTN(source);
+    POINTER_VALID_CHECK_RTN(destination);
+    POINTER_VALID_CHECK_RTN(source);
 
     destination->mqtt_version = source->mqtt_version;
     destination->client_id = source->client_id;
@@ -137,7 +137,7 @@ static int _serialize_connect_packet(unsigned char *buf, size_t buf_len, MQTTCon
     flags |= (options->clean_session) ? MQTT_CONNECT_FLAG_CLEAN_SES : 0;
     flags |= (options->username != NULL) ? MQTT_CONNECT_FLAG_USERNAME : 0;
 
-	flags |= MQTT_CONNECT_FLAG_PASSWORD;
+    flags |= MQTT_CONNECT_FLAG_PASSWORD;
     
     mqtt_write_char(&ptr, flags);
 
@@ -153,7 +153,7 @@ static int _serialize_connect_packet(unsigned char *buf, size_t buf_len, MQTTCon
     }
 
     if ((flags & MQTT_CONNECT_FLAG_PASSWORD) && options->password != NULL) {
-    	mqtt_write_utf8_string(&ptr, options->password);
+        mqtt_write_utf8_string(&ptr, options->password);
     }
 
     *serialized_len = (uint32_t) (ptr - buf);
@@ -268,14 +268,14 @@ static int _mqtt_connect(UIoT_Client *pClient, MQTTConnectParams *options) {
     // 序列化CONNECT报文
     ret = _serialize_connect_packet(pClient->write_buf, pClient->write_buf_size, &(pClient->options), &len);
     if (SUCCESS_RET != ret || 0 == len) {
-    	HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_MutexUnlock(pClient->lock_write_buf);
         return ret;
     }
 
     // 发送CONNECT报文
     ret = send_mqtt_packet(pClient, len, &connect_timer);
     if (SUCCESS_RET != ret) {
-    	HAL_MutexUnlock(pClient->lock_write_buf);
+        HAL_MutexUnlock(pClient->lock_write_buf);
         return ret;
     }
     HAL_MutexUnlock(pClient->lock_write_buf);
