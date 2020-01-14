@@ -4,17 +4,17 @@
 
 1.需要关注/ports路径下的三个文件夹,目录结构如下：
 
-| 名称            			| 说明 |
-| ----            			| ---- |
-| fal            			| flash相关 |
-|  ├─fal_cfg.h     			| flash分区表配置 |
-|  ├─fal_flash_port.c   	| flash驱动 |
-| rtthread          		| rtthread系统相关 |
+| 名称                        | 说明 |
+| ----                      | ---- |
+| fal                       | flash相关 |
+|  ├─fal_cfg.h              | flash分区表配置 |
+|  ├─fal_flash_port.c       | flash驱动 |
+| rtthread                  | rtthread系统相关 |
 |  ├─HAL_OS_rtthread.c      | 操作系统相关接口 |
 |  ├─HAL_TCP_rtthread.c     | 网络操作相关接口 |
 |  ├─HAL_Timer_Platform.h   | 定时操作相关接口声明 |
 |  ├─HAL_Timer_rtthread.c   | 定时操作相关接口 |
-| ssl          				| ssl数据加密相关，ssl功能不开启时可以不关注 |
+| ssl                       | ssl数据加密相关，ssl功能不开启时可以不关注 |
 |  ├─HAL_TLS_config.h       | mbedtls库相关的声明 |
 |  ├─HAL_TLS_mbedtls.c      | mbedtls库相关的接口 |
 

@@ -17,7 +17,7 @@
 
 4. 创建设备
 
-   - 根据[创建设备](/iot/uiot-core/console_guide/product_device/create_devcies)文档及页面提示，依次点击<详情>、点击<设备管理>、<添加设备>、<随机生成>、<生成设备个数1个>、<确定>； 
+   - 添加设备，点击<设备管理>、<添加设备>、<随机生成>、<生成设备个数1个>、<确定>； 
    
    ![随机添加设备](/images/随机添加设备.png)
 
@@ -38,31 +38,31 @@
 
 #### 配置设备信息
 通过rtthread的env配置工具配置产品和设备信息。
-	
+    
 1.  打开mqtt sample
-```			
-	--- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-	[*]   Enable mqtt                                                                                             
-			Auth Mode (Enable Static Register)  --->                                                               
-		  Ucloud Device Config  --->    
-	[ ]   Enable Tls                                                                                            
-	[*]   Enable Ucloud Mqtt Sample 			
-	[ ]   Enable Shadow      
-	[ ]   	Enable Ucloud Shadow Sample   	
-	[ ]   Enable Dev Model  
-	[ ]   	Enable Ucloud Dev Model Sample  	
-	[ ]   Enable Ota                                                                                                
-	[ ]   	Enable Ucloud Ota Sample                                                                                                                                                                                                                                                                                                          
-		  Version (latest)  --->
+```            
+    --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
+    [*]   Enable mqtt                                                                                             
+            Auth Mode (Enable Static Register)  --->                                                               
+          Ucloud Device Config  --->    
+    [ ]   Enable Tls                                                                                            
+    [*]   Enable Ucloud Mqtt Sample             
+    [ ]   Enable Shadow      
+    [ ]     Enable Ucloud Shadow Sample       
+    [ ]   Enable Dev Model  
+    [ ]     Enable Ucloud Dev Model Sample      
+    [ ]   Enable Ota                                                                                                
+    [ ]     Enable Ucloud Ota Sample                                                                                                                                                                                                                                                                                                          
+          Version (latest)  --->
 ```
 
 2.配置产品设备认证三要素
 ```
-	Ucloud Device Config	--->
-	[*] Device Config  ---- 
-	(5xaptnq5is1xt45c) Config Product SN
-	(tycfyk7697ra5jqs) Config Device SN                                                                           
-	(6kh48wf6oq5xktir) Config Device Secret
+    Ucloud Device Config    --->
+    [*] Device Config  ---- 
+    (5xaptnq5is1xt45c) Config Product SN
+    (tycfyk7697ra5jqs) Config Device SN                                                                           
+    (6kh48wf6oq5xktir) Config Device Secret
 ```
 
 3. 保存配置
@@ -75,18 +75,15 @@ msh />mqtt_test_example start
 5. 查看日志
 
 平台提供日志管理功能可以查看设备行为以及所有经过平台流转的上行或下行的数据。
-	
-设备上下线
-
-	![设备上线](/images/设备上线.png)
-	
-设备上行消息
-
-	![设备上行消息](/images/设备上行消息.png)
-	
-设备下行消息
-
-	![设备下行消息](/images/设备下行消息.png)
     
+1.设备上下线
 
+   ![设备上线](/images/设备上线.png)
+    
+2.设备上行消息
 
+   ![设备上行消息](/images/设备上行消息.png)
+    
+3.设备下行消息
+
+   ![设备下行消息](/images/设备下行消息.png)

@@ -20,10 +20,10 @@
 #define UIOT_MQTT_RX_BUF_LEN                                        (2048)
 
 /* 重连最大等待时间 */
-#define MAX_RECONNECT_WAIT_INTERVAL 								(60 * 1000)
+#define MAX_RECONNECT_WAIT_INTERVAL                                 (60 * 1000)
 
 /* 使能无限重连，0表示超过重连最大等待时间后放弃重连，
  * 1表示超过重连最大等待时间后以固定间隔尝试重连*/
-#define ENABLE_INFINITE_RECONNECT 								    1
+#define ENABLE_INFINITE_RECONNECT                                   1
 
 ```
