@@ -18,6 +18,8 @@
 |  ├─HAL_TLS_config.h       | mbedtls库相关的声明 |
 |  ├─HAL_TLS_mbedtls.c      | mbedtls库相关的接口 |
 
-2.移植到新的开发板上时只需要修改fal下的相关的文件，针对使用的开发板flash合理划分分区，修改分区配置表及驱动
+`fal`：移植到新的开发板上时只需要修改fal下的相关的文件，针对使用的开发板flash合理划分分区，修改分区配置表及驱动。
 
-3.可以通过修改mbedtls文件夹下的HAL_TLS_config.h打开或关闭宏添加或删除对应的功能
+`rtthread`： 与rtthread操作系统相关的一些接口,在rtthread系统上使用时一般不需要修改。
+
+`ssl`： 可以通过修改mbedtls文件夹下的HAL_TLS_config.h打开或关闭宏添加或删除对应的功能。
