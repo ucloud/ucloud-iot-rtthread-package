@@ -46,9 +46,7 @@ void* IOT_MQTT_Construct(MQTTInitParams *pParams)
     POINTER_VALID_CHECK(pParams, NULL);
     STRING_PTR_VALID_CHECK(pParams->product_sn, NULL);
     STRING_PTR_VALID_CHECK(pParams->device_sn, NULL);
-#ifdef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
-    STRING_PTR_VALID_CHECK(pParams->product_secret, NULL);
-#else
+#ifndef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
     STRING_PTR_VALID_CHECK(pParams->device_secret, NULL);
 #endif
 
