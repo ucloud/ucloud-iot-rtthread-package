@@ -128,10 +128,8 @@ static int _setup_connect_init_params(MQTTInitParams* initParams)
     initParams->product_sn = PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
     
 #ifdef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
-    initParams->product_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SECRET;
-    char device_secret_tmp[IOT_DEVICE_SN_LEN + 1];
-    HAL_GetDeviceSecret(device_secret_tmp);
-    initParams->device_secret = device_secret_tmp;
+    initParams->device_secret = (char *) malloc(IOT_DEVICE_SN_LEN + 1);
+    HAL_GetDeviceSecret(initParams->device_secret);
 #else
     initParams->device_secret = PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
 #endif

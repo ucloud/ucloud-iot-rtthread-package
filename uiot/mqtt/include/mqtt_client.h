@@ -90,11 +90,11 @@ typedef enum msgTypes {
 
 typedef enum {
     DISCONNECTED = 0,
-    CONNECTED     = 1
+    CONNECTED    = 1
 } ConnStatus;
 
 typedef enum {
-    STATIC_AUTH     = 1,        
+    STATIC_AUTH  = 1,        
     DYNAMIC_AUTH = 2,
 } AuthStatus;
 
