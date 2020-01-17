@@ -109,8 +109,8 @@ static void dynamic_test_thread(void)
         LOG_ERROR("get device secret fail\n");
         return;
     }
-    LOG_DEBUG("Password:%s\n",init_params.device_secret);
     init_params.device_secret = secret;
+    LOG_DEBUG("Password:%s\n",init_params.device_secret);
     void *static_client = IOT_MQTT_Construct(&init_params);
     if(static_client == NULL)
     {   
