@@ -93,9 +93,9 @@ uintptr_t HAL_TCP_Connect(_IN_ const char *host, _IN_ uint16_t port) {
         if (connect(fd, cur->ai_addr, cur->ai_addrlen) == 0) {
             rc = fd;
             break;
-        }
+        } 
 
-        close(fd);
+        closesocket(fd);
         printf("connect error\n");
         rc = -1;
     }
@@ -107,9 +107,6 @@ uintptr_t HAL_TCP_Connect(_IN_ const char *host, _IN_ uint16_t port) {
     }
     freeaddrinfo(addrInfoList);
 
-    //忽略SIGPIPE，防止在网络异常时进程退出
-    signal(SIGPIPE, SIG_IGN);
-
     return (uintptr_t) rc;
 }
 
@@ -117,7 +114,7 @@ uintptr_t HAL_TCP_Connect(_IN_ const char *host, _IN_ uint16_t port) {
 int32_t HAL_TCP_Disconnect(_IN_ uintptr_t fd) {
     int rc;
 
-    rc = close((int) fd);
+    rc = closesocket((int) fd);
     if (0 != rc) {
         printf("close socket error\n");
         return FAILURE_RET;
@@ -126,96 +123,47 @@ int32_t HAL_TCP_Disconnect(_IN_ uintptr_t fd) {
     return SUCCESS_RET;
 }
 
-
 int32_t HAL_TCP_Write(_IN_ uintptr_t fd, _IN_ unsigned char *buf, _IN_ size_t len, _IN_ uint32_t timeout_ms) {
     int ret,tcp_fd;
     size_t len_sent;
     uint64_t t_end;
-    fd_set sets;
-    IoT_Error_t net_err = SUCCESS_RET;
 
     t_end = rtthread_get_time_ms() + timeout_ms;
     len_sent = 0;
     ret = 1; /* send one time if timeout_ms is value 0 */
 
-    if (fd >= FD_SETSIZE) {
-        return -1;
-    }
     tcp_fd = (int)fd;
 
     do {
         uint64_t t_left = rtthread_time_left(t_end, rtthread_get_time_ms());
 
-        if (0 != t_left) {
-            struct timeval timeout;
-
-            FD_ZERO(&sets);
-            FD_SET(tcp_fd, &sets);
-
-            timeout.tv_sec = t_left / 1000;
-            timeout.tv_usec = (t_left % 1000) * 1000;
-
-            ret = select(tcp_fd + 1, NULL, &sets, NULL, &timeout);
-            if (ret > 0) {
-                if (0 == FD_ISSET(tcp_fd, &sets)) {
-                    printf("Should NOT arrive\n");
-                    /* If timeout in next loop, it will not sent any data */
-                    ret = 0;
-                    continue;
-                }
-            } else if (0 == ret) {
-                printf("select-write timeout %d\n", tcp_fd);
-                break;
-            } else {
-                if (EINTR == errno) {
-                    printf("EINTR be caught\n");
-                    continue;
-                }
-
-                printf("select-write fail, ret = select() = %d\n", ret);
-                net_err = ERR_TCP_WRITE_FAILED;
-                break;
-            }
-        }
-
+        ret = send(tcp_fd, buf + len_sent, len - len_sent, 0);
         if (ret > 0) {
-            ret = send(tcp_fd, buf + len_sent, len - len_sent, 0);
-            if (ret > 0) {
-                len_sent += ret;
-            } else if (0 == ret) {
-                printf("No data be sent\n");
-            } else {
-                if (EINTR == errno) {
-                    printf("EINTR be caught\n");
-                    continue;
-                }
-
-                printf("send fail, ret = send() = %d\n", ret);
-                net_err = ERR_TCP_WRITE_FAILED;
-                break;
-            }
+            len_sent += ret;
+        } 
+        else if (errno == EINTR || errno == EAGAIN){
+            printf("send fail,try again\n");
+            continue;
         }
-    } while (!net_err && (len_sent < len) && (rtthread_time_left(t_end, rtthread_get_time_ms()) > 0));
+        else{
+            break;
+        }
+    } while ((len_sent < len)&& (rtthread_time_left(t_end, rtthread_get_time_ms()) > 0));
 
-    return net_err != SUCCESS_RET ? net_err : len_sent;
+    return len_sent > 0 ? len_sent : ERR_TCP_WRITE_FAILED;
 }
 
 
 int32_t HAL_TCP_Read(_IN_ uintptr_t fd, _OU_ unsigned char *buf, _IN_ size_t len, _IN_ uint32_t timeout_ms) {
-    int tcp_fd;
+    int ret,tcp_fd;
     IoT_Error_t err_code;
     size_t len_recv;
     uint64_t t_end;
-    fd_set sets;
-    struct timeval timeout;
 
     t_end = rtthread_get_time_ms() + timeout_ms;
     len_recv = 0;
     err_code = SUCCESS_RET;
 
-    if (fd >= FD_SETSIZE) {
-        return FAILURE_RET;
-    }
     tcp_fd = (int)fd;
 
     do {
@@ -223,40 +171,18 @@ int32_t HAL_TCP_Read(_IN_ uintptr_t fd, _OU_ unsigned char *buf, _IN_ size_t len
         if (0 == t_left) {
             break;
         }
-        FD_ZERO(&sets);
-        FD_SET(tcp_fd, &sets);
-
-        timeout.tv_sec = t_left / 1000;
-        timeout.tv_usec = (t_left % 1000) * 1000;
-
-        int ret = select(tcp_fd + 1, &sets, NULL, NULL, &timeout);
+        
+        ret = recv(tcp_fd, buf + len_recv, len - len_recv, MSG_DONTWAIT);
         if (ret > 0) {
-            ret = recv(tcp_fd, buf + len_recv, len - len_recv, 0);
-            if (ret > 0) {
-                len_recv += ret;
-            } else if (0 == ret) {
-                printf("connection is closed\n");
-                err_code = ERR_TCP_PEER_SHUTDOWN;
-                break;
-            } else {
-                if (EINTR == errno) {
-                    continue;
-                }
-                printf("recv fail\n");
-                err_code = ERR_TCP_READ_FAILED;
-                break;
-            }
-        } else if (0 == ret) {
-            break;
-        } else {
-            if (EINTR == errno) {
-                continue;
-            }
-            printf("select-recv fail\n");
+            len_recv += ret;
+        }else if (errno == EINTR || errno == EAGAIN){
+            printf("read fail,try again\n");
             err_code = ERR_TCP_READ_FAILED;
-            break;
+            continue;
         }
-    } while ((len_recv < len));
+    } while (len_recv < len);
 
     return (0 != len_recv) ? len_recv : err_code;
 }
+
+
