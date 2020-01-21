@@ -67,24 +67,33 @@ int32_t ofc_connect(void *handle)
     const char *ca_crt = NULL;
 #endif
 
-    int32_t rc = http_client_common(&h_ofc->http, h_ofc->url, port, ca_crt, HTTP_GET, &h_ofc->http_data, 5000);
+    int32_t rc = http_client_connect(&h_ofc->http, h_ofc->url, port, ca_crt);
 
     FUNC_EXIT_RC(rc);
 }
 
 
-int32_t ofc_fetch(void *handle, char *buf, uint32_t buf_len, uint32_t timeout_s)
+int32_t ofc_fetch(void *handle, uint32_t size_fetched, char *buf, uint32_t buf_len, size_t range_len, uint32_t timeout_s)
 {
     FUNC_ENTRY;
 
     int diff;
     OTA_Http_Client * h_ofc = (OTA_Http_Client *)handle;
 
+    /* 分片请求 */
+    int rc = _http_send_request(&h_ofc->http, h_ofc->url, HTTP_GET, size_fetched, range_len, &h_ofc->http_data, 5000);
+    if (rc != SUCCESS_RET) {
+        LOG_ERROR("http_send_request error, rc = %d, size_fetched = %d\r\n", rc, size_fetched);
+        FUNC_EXIT_RC(rc);
+    }    
+
     h_ofc->http_data.response_buf = buf;
     h_ofc->http_data.response_buf_len = buf_len;
+    h_ofc->http_data.response_content_len = 0;
+    h_ofc->http_data.response_received_len = 0;
     diff = h_ofc->http_data.response_content_len - h_ofc->http_data.retrieve_len;
     
-    int rc = http_client_recv_data(&h_ofc->http, timeout_s * 1000, &h_ofc->http_data);
+    rc = http_client_recv_data(&h_ofc->http, timeout_s * 1000, &h_ofc->http_data);
     if (SUCCESS_RET != rc) {
         if (rc == ERR_HTTP_NOT_FOUND)
             FUNC_EXIT_RC(ERR_OTA_FILE_NOT_EXIST);

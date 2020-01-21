@@ -8,20 +8,20 @@ UCloud IOT SDK for rt-thread Package 是基于[UCloud设备端C-SDK](https://git
 
 ### 1.2 目录结构
 
-| 名称            	| 说明 |
-| ----            	| ---- |
-| uiot            	| UCloud设备端C-SDK |
-| ports           	| 移植文件目录 |
-| samples         	| 示例目录 |
-|  ├─mqtt      		| 静态注册收发消息示例 |
+| 名称              | 说明 |
+| ----              | ---- |
+| uiot              | UCloud设备端C-SDK |
+| ports             | 移植文件目录 |
+| samples           | 示例目录 |
+|  ├─mqtt           | 静态注册收发消息示例 |
 |  ├─dynamic_auth   | 动态注册示例 |
 |  ├─dev_model      | 物模型示例 |
-|  ├─ota      		| ota升级示例 |
-|  ├─shadow      	| 设备影子示例 |
-| docs         	    | 说明文档 |
-| LICENSE         	| 许可证文件 |
-| README.md       	| 软件包使用说明 |
-| SConscript      	| RT-Thread 默认的构建脚本 |
+|  ├─ota            | ota升级示例 |
+|  ├─shadow         | 设备影子示例 |
+| docs              | 说明文档 |
+| LICENSE           | 许可证文件 |
+| README.md         | 软件包使用说明 |
+| SConscript        | RT-Thread 默认的构建脚本 |
 
 ### 1.3 许可证
 
@@ -40,31 +40,32 @@ menuconfig配置
 路径如下：
 ```
 RT-Thread online packages  --->
-	IoT - internet of things  --->
-		IoT Cloud  --->
-			[ ] ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.  --->
-			  --- ucloud-iothub:  ucloud iot sdk for uiot-core platform 
-				[ ]   Enable Mqtt 
-				ucloud Device Config  --->  
-				Version (latest)  --->	
+    IoT - internet of things  --->
+        IoT Cloud  --->
+            [ ] ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.  --->
+              --- ucloud-iothub:  ucloud iot sdk for uiot-core platform 
+                [ ]   Enable Mqtt 
+                ucloud Device Config  --->  
+                Version (latest)  --->	
 ```
 
 ## 3 软件包的使用
 根据产品需求选择合适的应用示例修改新增业务逻辑，也可新增例程编写新的业务逻辑。
-```			
-	--- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-	[*]   Enable mqtt                                                                                             
-			Auth Mode (Enable Static Register)  --->                                                               
-		  Ucloud Device Config  --->    
-	[ ]   Enable Tls                                                                                            
-	[ ]   Enable Ucloud Mqtt Sample 			
-	[ ]   Enable Shadow      
-	[ ]   	Enable Ucloud Shadow Sample   	
-	[ ]   Enable Dev Model  
-	[ ]   	Enable Ucloud Dev Model Sample  	
-	[ ]   Enable Ota                                                                                                
-	[ ]   	Enable Ucloud Ota Sample                                                                                                                                                                                                                                                                                                          
-		  Version (latest)  --->
+```	
+    --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
+    [*]   Enable mqtt                                                                                             
+            Auth Mode (Enable Static Register)  --->                                                               
+          Ucloud Device Config  --->    
+    [ ]   Enable Tls                                                                                            
+    [ ]   Enable Ucloud Mqtt Sample 
+    [ ]   Enable Shadow      
+    [ ]     Enable Ucloud Shadow Sample
+    [ ]   Enable Dev Model  
+    [ ]     Enable Ucloud Dev Model Sample
+    [ ]   Enable Ota                                                                                                
+    [ ]     Enable Ucloud Ota Sample  
+    [ ]   Enable Ucloud Debug
+          Version (latest)  --->
 ```
 
 - 选项说明
@@ -94,6 +95,8 @@ RT-Thread online packages  --->
 `Enable Ota`：使能远程升级版本的功能，若使能，则会关联选中ota_downloader软件包。
 
 `Enable Ucloud Ota Sample`：使能远程升级版本的案例
+
+`Enable Ucloud Debug`: 使能打印输出
 
 `Version (latest)  --->`：
 

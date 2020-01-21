@@ -69,7 +69,7 @@ void *ofc_init(const char *url);
 
 int32_t ofc_connect(void *handle);
 
-int32_t ofc_fetch(void *handle, char *buf, uint32_t buf_len, uint32_t timeout_s);
+int32_t ofc_fetch(void *handle, uint32_t size_fetched, char *buf, uint32_t buf_len, size_t range_len, uint32_t timeout_s);
 
 int ofc_deinit(void *handle);
 

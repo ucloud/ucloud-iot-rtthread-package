@@ -86,8 +86,6 @@ int IOT_Shadow_Destroy(void *handle)
     UIoT_Shadow* shadow_client = (UIoT_Shadow*)handle;
     uiot_shadow_reset(handle);
 
-    IOT_MQTT_Destroy(&shadow_client->mqtt);
-
     if (NULL != shadow_client->request_mutex) {
         HAL_MutexDestroy(shadow_client->request_mutex);
     }
