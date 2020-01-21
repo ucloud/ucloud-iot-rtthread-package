@@ -50,7 +50,7 @@ extern "C" {
 #define MIN_COMMAND_TIMEOUT                                         (500)
 
 /* MQTT报文最大超时时间 */
-#define MAX_COMMAND_TIMEOUT                                         (50000)
+#define MAX_COMMAND_TIMEOUT                                         (5000)
 
 /* 云端保留主题的最大长度 */
 #define MAX_SIZE_OF_CLOUD_TOPIC                                     (128)

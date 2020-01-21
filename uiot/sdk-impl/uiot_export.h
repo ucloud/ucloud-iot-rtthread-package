@@ -24,7 +24,7 @@ extern "C" {
 #define UIOT_MQTT_KEEP_ALIVE_INTERNAL                               (240)
 
 /* MQTT 阻塞调用(包括连接, 订阅, 发布等)的超时时间 */
-#define UIOT_MQTT_COMMAND_TIMEOUT                                   (5 * 10000)
+#define UIOT_MQTT_COMMAND_TIMEOUT                                   (5 * 1000)
 
 /* 接收到 MQTT 包头以后，接收剩余长度及剩余包，最大延迟等待时延 */
 #define UIOT_MQTT_MAX_REMAIN_WAIT_MS                                (2000)
