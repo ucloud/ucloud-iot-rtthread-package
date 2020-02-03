@@ -15,11 +15,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
 
