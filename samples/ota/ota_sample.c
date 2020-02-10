@@ -167,7 +167,7 @@ static int ota_test_example(int argc, char **argv)
     }
     
     tid = rt_thread_create("ota_test", (void (*)(void *))ota_test_thread, 
-                            NULL, stack_size, 9, 10);  
+                            NULL, stack_size, RT_THREAD_PRIORITY_MAX / 2 - 1, 100);  
 
     if (tid != RT_NULL)
     {
