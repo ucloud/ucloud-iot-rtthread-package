@@ -13,7 +13,7 @@ STM32f767ZI + ESP8266
 
 ## 开启功能
 
-静态注册模式下，开启了设备影子，物模型和ota升级，没有开启tls
+静态注册模式下，开启了设备影子，物模型 ，ota升级和tls
 
 ## 依赖软件包
 
@@ -22,6 +22,7 @@ STM32f767ZI + ESP8266
 * `FinSH控制台`
 * `netdev网卡抽象层`
 * `FAL存储抽象层`
+* `mbedtls`
 
 rtthread配置如下：
 ```     
@@ -131,6 +132,7 @@ rtthread配置如下：
     /* POSIX layer and C standard library */
     
     #define RT_USING_LIBC
+    #define RT_USING_POSIX
     
     /* Network */
     
@@ -141,7 +143,8 @@ rtthread配置如下：
     /* protocol stack implement */
     
     #define SAL_USING_AT
-    #define SAL_SOCKETS_NUM 16
+    #define SAL_USING_TLS
+    #define SAL_USING_POSIX
     
     /* Network interface device */
     
@@ -202,6 +205,7 @@ rtthread配置如下：
     #define PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN "PRODUCT_SN"
     #define PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN "DEVICE_SN"
     #define PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET "DEVICE_SECRET"
+    #define PKG_USING_UCLOUD_TLS
     #define PKG_USING_UCLOUD_MQTT_SAMPLE
     #define PKG_USING_UCLOUD_SHADOW
     #define PKG_USING_UCLOUD_SHADOW_SAMPLE
@@ -214,6 +218,16 @@ rtthread配置如下：
     
     /* security packages */
     
+    #define PKG_USING_MBEDTLS
+    
+    /* Select Root Certificate */
+    
+    #define MBEDTLS_AES_ROM_TABLES
+    #define MBEDTLS_ECP_WINDOW_SIZE 2
+    #define MBEDTLS_SSL_MAX_CONTENT_LEN 16384
+    #define MBEDTLS_MPI_MAX_SIZE 1024
+    #define MBEDTLS_CTR_DRBG_KEYSIZE 32
+    #define PKG_USING_MBEDTLS_V2710
     
     /* language packages */
     
