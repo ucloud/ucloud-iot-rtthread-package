@@ -31,9 +31,6 @@ UCloud IOT SDK for rt-thread Package 是基于[UCloud设备端C-SDK](https://git
 Tls功能需要mbedtls软件包
 [ ] mbedtls: An portable and flexible SSL/TLS library  ----
 
-ota功能需要ota_downloader
-[ ] ota_downloader: The firmware downloader which using on RT-Thread OTA component  --->
-
 ## 2 如何打开软件包
 menuconfig配置
 - RT-Thread env开发工具中使用 `menuconfig` 软件包，配置产品及设备信息，
