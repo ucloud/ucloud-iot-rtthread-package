@@ -28,6 +28,8 @@ UCloud IOT SDK for rt-thread Package 是基于[UCloud设备端C-SDK](https://git
 许可协议Apache 2.0。
 
 ### 1.4 依赖
+Ota功能需要fal软件包
+[ ] fal: Flash Abstraction Layer implement. Manage flash device and partition.  --->
 Tls功能需要mbedtls软件包
 [ ] mbedtls: An portable and flexible SSL/TLS library  ----
 
@@ -50,54 +52,50 @@ RT-Thread online packages  --->
 根据产品需求选择合适的应用示例修改新增业务逻辑，也可新增例程编写新的业务逻辑。
 ```	
     --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-    [*]   Enable mqtt                                                                                             
-            Auth Mode (Enable Static Register)  --->                                                               
+    [*]   Enable Mqtt                                                                                             
           Ucloud Device Config  --->    
-    [ ]   Enable Tls                                                                                            
-    [ ]   Enable Ucloud Mqtt Sample 
-    [ ]   Enable Shadow      
+    [*]   Enable Ucloud Mqtt Sample 
+    [ ]   Enable Ucloud Mqtt Dynamic Auth Sample
+    [*]   Enable Shadow      
     [ ]     Enable Ucloud Shadow Sample
-    [ ]   Enable Dev Model  
+    [*]   Enable Dev Model  
     [ ]     Enable Ucloud Dev Model Sample
-    [ ]   Enable Ota                                                                                                
+    [*]   Enable Ota                                                                                                
     [ ]     Enable Ucloud Ota Sample  
+    [ ]   Enable Tls 
     [ ]   Enable Ucloud Debug
           Version (latest)  --->
 ```
 
 - 选项说明
 
-`Enable mqtt`：使能MQTT功能。
+`Enable Mqtt`：使能MQTT连接云平台功能。
 
-`Auth Mode (Enable static register)`：认证模式，分为静态认证和动态认证模式, (括号内为当前选择的模式)。
+`Ucloud Device Config `：填写当前设备认证要素，当认证模式为动态认证时，设备密钥可以不填写
 
-`Enable Static Register`：静态注册模式使用产品号，设备号，设备密钥认证
+`Enable Ucloud Mqtt Sample`：使能静态注册mqtt和注册成功后收发消息的案例
 
-`Enable Dynamic Register`：动态注册模式使用产品号，设备号，产品密钥认证
-
-`Ucloud Device Config `：根据认证模式填写当前设备认证要素，当认证模式为动态认证时，设备密钥可以不填写
-
-`Enable TLS`： 是否使能TLS，若使能，则会关联选中mbedTLS软件包。
-
-`Enable Ucloud Mqtt Sample`：使能mqtt收发消息的案例
+`Enable Ucloud Mqtt Dynamic Auth Sample`: 使能动态注册mqtt和注册成功后收发消息的案例
 
 `Enable Shadow`：使能设备影子功能
 
-`Enable Ucloud Shadow Sample`：使能物模型的案例
+`Enable Ucloud Shadow Sample`：使能设备影子的案例
 
 `Enable Dev Model`：使能物模型功能
 
 `Enable Ucloud Dev Model Sample`：使能物模型的案例
 
-`Enable Ota`：使能远程升级版本的功能，若使能，则会关联选中ota_downloader软件包。
+`Enable Ota`：使能远程升级版本的功能，若使能，则会关联选中fal软件包。
 
 `Enable Ucloud Ota Sample`：使能远程升级版本的案例
 
-`Enable Ucloud Debug`: 使能打印输出
+`Enable TLS`： 是否使能TLS，若使能，则会关联选中mbedTLS软件包。
+
+`Enable Ucloud Debug`: 使能调试打印输出
 
 `Version (latest)  --->`：
 
-- 使用 `pkgs --update` 命令下载软件包
+- 使用 `pkgs --update` 命令下载需要使用的软件包
 
 ### 2.2 编译及运行
 1. 使用命令 scons --target=xxx 输出对应的工程，编译 

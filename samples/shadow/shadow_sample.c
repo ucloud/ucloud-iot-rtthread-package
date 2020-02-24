@@ -77,12 +77,7 @@ static int _setup_connect_init_params(MQTTInitParams* initParams)
     int ret = SUCCESS_RET;
     initParams->device_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN;
     initParams->product_sn = (char *)PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN;
-#ifdef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
-    initParams->device_secret = (char *) malloc(IOT_DEVICE_SN_LEN + 1);
-    HAL_GetDeviceSecret(initParams->device_secret);
-#else    
     initParams->device_secret = (char *)PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET;
-#endif
     initParams->command_timeout = UIOT_MQTT_COMMAND_TIMEOUT;
     initParams->keep_alive_interval = UIOT_MQTT_KEEP_ALIVE_INTERNAL;
     initParams->auto_connect_enable = 1;
@@ -221,6 +216,93 @@ static void shadow_test_thread(void)
     if(SUCCESS_RET != ret)
     {
         HAL_Printf("Update Property1 Property2 Property3 Property4 Property5 Property6 fail:%d\n", ret);
+        return;
+    }
+    
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
+
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    /* update */    
+    num1 = 123;
+    Property1->data = &num1;
+
+    char num9[5] = "num9";
+    Property4->data = num9;
+
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Update(sg_pshadow, _update_ack_cb, time_sec, &ack_update, 2, Property1, Property4);
+    if(SUCCESS_RET != ret)
+    {
+        HAL_Printf("Update Property1 Property4 fail:%d\n", ret);
+        return;
+    }
+    
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    /* delete */    
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Delete(sg_pshadow, _update_ack_cb, time_sec, &ack_update, 2, Property1, Property2);
+    if(SUCCESS_RET != ret)
+    {
+        HAL_Printf("Delete Property1 Property2 fail:%d\n", ret);
+        return;
+    }
+
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
+
+
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    /* delete all */
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Delete_All(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
+    if(SUCCESS_RET != ret)
+    {
+        HAL_Printf("Delete All fail:%d\n", ret);
+        return;
+    }
+
+
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Get_Sync(sg_pshadow, _update_ack_cb, time_sec, &ack_update);
+
+
+    while (ACK_NONE == ack_update) {
+        IOT_Shadow_Yield(sg_pshadow, MAX_WAIT_TIME_MS);
+    }
+
+    Property1->data = &num1;
+    Property4->data = num4;
+    Property5->data = &num5;
+    Property6->data = num6;
+
+    /* update */    
+    ack_update = ACK_NONE;
+    ret = IOT_Shadow_Update_And_Reset_Version(sg_pshadow, _update_ack_cb, time_sec, &ack_update, 4, Property1, Property4, Property5, Property6);
+    if(SUCCESS_RET != ret)
+    {
+        HAL_Printf("Update and Reset Ver fail:%d\n", ret);
         return;
     }
     
