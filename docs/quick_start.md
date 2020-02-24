@@ -43,16 +43,17 @@
 ```            
     --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
     [*]   Enable mqtt                                                                                             
-            Auth Mode (Enable Static Register)  --->                                                               
-          Ucloud Device Config  --->    
-    [ ]   Enable Tls                                                                                            
-    [*]   Enable Ucloud Mqtt Sample             
-    [ ]   Enable Shadow      
+          Ucloud Device Config  --->
+    [*]   Enable Ucloud Mqtt Sample 
+    [ ]   Enable Ucloud Mqtt Dynamic Auth Sample
+    [*]   Enable Shadow      
     [ ]     Enable Ucloud Shadow Sample       
-    [ ]   Enable Dev Model  
+    [*]   Enable Dev Model  
     [ ]     Enable Ucloud Dev Model Sample      
-    [ ]   Enable Ota                                                                                                
-    [ ]     Enable Ucloud Ota Sample                                                                                                                                                                                                                                                                                                          
+    [*]   Enable Ota                                                                                                
+    [ ]     Enable Ucloud Ota Sample       
+    [ ]   Enable Tls 
+    [ ]   Enable Ucloud Debug
           Version (latest)  --->
 ```
 
@@ -61,6 +62,7 @@
     Ucloud Device Config    --->
     [*] Device Config  ---- 
     (5xaptnq5is1xt45c) Config Product SN
+    (dy0jndfndj6wvvq0) Config Product Secret
     (tycfyk7697ra5jqs) Config Device SN                                                                           
     (6kh48wf6oq5xktir) Config Device Secret
 ```

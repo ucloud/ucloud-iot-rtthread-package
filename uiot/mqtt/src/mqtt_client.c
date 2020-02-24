@@ -46,9 +46,6 @@ void* IOT_MQTT_Construct(MQTTInitParams *pParams)
     POINTER_VALID_CHECK(pParams, NULL);
     STRING_PTR_VALID_CHECK(pParams->product_sn, NULL);
     STRING_PTR_VALID_CHECK(pParams->device_sn, NULL);
-#ifndef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
-    STRING_PTR_VALID_CHECK(pParams->device_secret, NULL);
-#endif
 
     UIoT_Client* mqtt_client = NULL;
 
@@ -81,9 +78,8 @@ void* IOT_MQTT_Construct(MQTTInitParams *pParams)
     }
 
     int auth_mode = 0;
-#ifdef PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH
     //动态认证时如果还未获取设备密钥则先使用产品密钥进行预认证
-    if(NULL == pParams->device_secret)
+    if((NULL == pParams->device_secret) && (NULL != pParams->product_secret))
     {
         auth_mode = DYNAMIC_AUTH;
         int password_len = strlen(pParams->product_secret) + 1;
@@ -96,7 +92,6 @@ void* IOT_MQTT_Construct(MQTTInitParams *pParams)
         }
         HAL_Snprintf(connect_params.password, password_len, "%s", pParams->product_secret);
     }
-#endif
     //使用获取到的设备密钥进行静态注册
     if(NULL != pParams->device_secret)
     {

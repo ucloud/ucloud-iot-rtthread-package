@@ -36,17 +36,17 @@ if GetDepend(['PKG_USING_UCLOUD_DEBUG']):
 #Gen MQTT src file
 if GetDepend(['PKG_USING_UCLOUD_MQTT']):
     src_base += Glob('uiot/mqtt/src/*.c')
-    src_base += Glob('uiot/utils/*.c')
+    src_base += Glob('uiot/utils/utils_timer.c')
+    src_base += Glob('uiot/utils/utils_net.c')
+    src_base += Glob('uiot/utils/utils_list.c')
+    src_base += Glob('uiot/utils/json_parser.c')
+    src_base += Glob('uiot/utils/json_token.c')
+    src_base += Glob('uiot/utils/string_utils.c')
     src_base += Glob('ports/rtthread/*.c')
-    src_base += Glob('ports/fal/*.c')
-    SrcRemove(src_base, 'uiot/utils/utils_sha2.c')
-
-#enable dynamic auth
-#if GetDepend(['PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH']):
 
 #Gen shadow src file
 if GetDepend(['PKG_USING_UCLOUD_SHADOW']):
-    src_base += Glob('uiot/shadow/src/*.c')
+    src_base += Glob('uiot/shadow/src/*.c')	
 
 #Gen dev model src file
 if GetDepend(['PKG_USING_UCLOUD_DEV_MODEL']):
@@ -55,6 +55,9 @@ if GetDepend(['PKG_USING_UCLOUD_DEV_MODEL']):
 #Gen ota src file
 if GetDepend(['PKG_USING_UCLOUD_OTA']):
     src_base += Glob('uiot/ota/src/*.c')
+    src_base += Glob('ports/fal/*.c')
+    src_base += Glob('uiot/utils/utils_md5.c')
+    src_base += Glob('uiot/utils/utils_httpc.c')
 
 #TLS used
 if GetDepend(['PKG_USING_UCLOUD_TLS']):
