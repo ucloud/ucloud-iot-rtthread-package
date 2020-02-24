@@ -44,7 +44,7 @@ RT-Thread online packages  --->
             [ ] ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.  --->
               --- ucloud-iothub:  ucloud iot sdk for uiot-core platform 
                 [ ]   Enable Mqtt 
-                      ucloud Device Config  --->  
+                ucloud Device Config  --->  
                 Version (latest)  --->	
 ```
 
@@ -52,7 +52,7 @@ RT-Thread online packages  --->
 根据产品需求选择合适的应用示例修改新增业务逻辑，也可新增例程编写新的业务逻辑。
 ```	
     --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-    [*]   Enable mqtt                                                                                             
+    [*]   Enable Mqtt                                                                                             
           Ucloud Device Config  --->    
     [*]   Enable Ucloud Mqtt Sample 
     [ ]   Enable Ucloud Mqtt Dynamic Auth Sample
@@ -69,13 +69,13 @@ RT-Thread online packages  --->
 
 - 选项说明
 
-`Enable mqtt`：使能MQTT功能。
+`Enable Mqtt`：使能MQTT连接云平台功能。
 
 `Ucloud Device Config `：填写当前设备认证要素，当认证模式为动态认证时，设备密钥可以不填写
 
-`Enable Ucloud Mqtt Sample`：使能静态注册mqtt&收发消息的案例
+`Enable Ucloud Mqtt Sample`：使能静态注册mqtt和注册成功后收发消息的案例
 
-`Enable Ucloud Mqtt Dynamic Auth Sample`: 使能动态注册mqtt的案例
+`Enable Ucloud Mqtt Dynamic Auth Sample`: 使能动态注册mqtt和注册成功后收发消息的案例
 
 `Enable Shadow`：使能设备影子功能
 
@@ -91,7 +91,7 @@ RT-Thread online packages  --->
 
 `Enable TLS`： 是否使能TLS，若使能，则会关联选中mbedTLS软件包。
 
-`Enable Ucloud Debug`: 使能打印输出
+`Enable Ucloud Debug`: 使能调试打印输出
 
 `Version (latest)  --->`：
 
