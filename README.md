@@ -15,6 +15,7 @@ UCloud IOT SDK for rt-thread Package 是基于[UCloud设备端C-SDK](https://git
 | samples           | 示例目录 |
 |  ├─mqtt           | 静态注册收发消息示例 |
 |  ├─dynamic_auth   | 动态注册示例 |
+|  ├─http           | Http连接云平台示例 |
 |  ├─dev_model      | 物模型示例 |
 |  ├─ota            | ota升级示例 |
 |  ├─shadow         | 设备影子示例 |
@@ -43,7 +44,8 @@ RT-Thread online packages  --->
         IoT Cloud  --->
             [ ] ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.  --->
               --- ucloud-iothub:  ucloud iot sdk for uiot-core platform 
-                [ ]   Enable Mqtt 
+                [ ]   Enable Mqtt link uiot-core platform
+                [ ]   Enable Http link uiot-core platform
                 ucloud Device Config  --->  
                 Version (latest)  --->	
 ```
@@ -52,7 +54,8 @@ RT-Thread online packages  --->
 根据产品需求选择合适的应用示例修改新增业务逻辑，也可新增例程编写新的业务逻辑。
 ```	
     --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-    [*]   Enable Mqtt                                                                                             
+    [*]   Enable Mqtt link uiot-core platform
+    [ ]   Enable Http link uiot-core platform
           Ucloud Device Config  --->    
     [*]   Enable Ucloud Mqtt Sample 
     [ ]   Enable Ucloud Mqtt Dynamic Auth Sample
@@ -69,7 +72,9 @@ RT-Thread online packages  --->
 
 - 选项说明
 
-`Enable Mqtt`：使能MQTT连接云平台功能。
+`Enable Mqtt link uiot-core platform`：使能MQTT连接云平台功能。
+
+`Enable Http link uiot-core platform`：使能HTTP连接云平台功能,只支持https,勾选会关联选中mbedTLS软件包。
 
 `Ucloud Device Config `：填写当前设备认证要素，当认证模式为动态认证时，设备密钥可以不填写
 

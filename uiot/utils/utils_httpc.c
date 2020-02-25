@@ -122,8 +122,15 @@ static int _http_send_header(http_client_t *client, char *host, const char *path
     memset(send_buf, 0, HTTP_CLIENT_SEND_BUF_SIZE);
     len = 0; /* Reset send buffer */
 
-    HAL_Snprintf(buf, sizeof(buf), "%s %s HTTP/1.1\r\nHost: %s\r\nRange: bytes=%d-%d\r\n", pMethod, path, host, size_fetched, size_fetched + range_len); /* Write request */
-
+    if(range_len != 0)
+    {
+        HAL_Snprintf(buf, sizeof(buf), "%s %s HTTP/1.1\r\nHost: %s\r\nRange: bytes=%d-%d\r\n", pMethod, path, host, size_fetched, size_fetched + range_len); /* Write request */
+    }
+    else
+    {
+        HAL_Snprintf(buf, sizeof(buf), "%s %s HTTP/1.1\r\nHost: %s\r\n", pMethod, path, host); /* Write request */
+    }
+    
     ret = _utils_fill_tx_buffer(client, send_buf, &len, buf, strlen(buf));
     if (ret < 0) {
         /* LOG_ERROR("Could not write request"); */
@@ -479,6 +486,27 @@ int http_client_connect(http_client_t *client, const char *url, int port, const 
     return rc;
 }
 
+int http_client_common(http_client_t *client, const char *url, int port, const char *ca_crt,
+                       HTTP_Request_Method method, http_client_data_t *client_data, uint32_t timeout_ms) {
+    int rc;
+
+    if (client->net.handle == 0) {
+        rc = http_client_connect(client, url, port, ca_crt);
+        if (rc != SUCCESS_RET) {
+            return rc;
+        }
+    }
+
+    rc = _http_send_request(client, url, method, 0, 0, client_data, timeout_ms);
+    if (rc != SUCCESS_RET) {
+        LOG_ERROR("http_send_request error, rc = %d", rc);
+        http_client_close(client);
+        return rc;
+    }
+
+    return SUCCESS_RET;
+}
+
 int http_client_recv_data(http_client_t *client, uint32_t timeout_ms, http_client_data_t *client_data) {
     int rc = SUCCESS_RET;
     Timer timer;
@@ -534,6 +562,18 @@ void http_client_file_md5(char* file_path, char *output)
     utils_md5_free(&ctx);
     fclose(fp);
     HAL_Free(buffer);
+}
+
+void http_client_buffer_md5(char* buffer, uint32_t buffer_len, char *output)
+{
+    iot_md5_context ctx;
+    
+    utils_md5_init(&ctx);
+    utils_md5_starts(&ctx);
+    utils_md5_update(&ctx, (unsigned char *)buffer, buffer_len);
+    utils_md5_finish_hb2hex(&ctx, output);
+    utils_md5_free(&ctx);
+    return;
 }
 
 #ifdef __cplusplus

@@ -8,6 +8,8 @@ src_base  = []
 
 sample_ucloud_mqtt_src  = []
 sample_ucloud_mqtt_dynamic_auth_src  = []
+sample_ucloud_http_publish_src = []
+sample_ucloud_http_upload_file_src = []
 sample_ucloud_shadow_src  = []
 sample_ucloud_dev_model_src  = []
 sample_ucloud_ota_src = []
@@ -29,6 +31,8 @@ CPPPATH += [cwd + '/uiot/sdk-impl']
 CPPPATH += [cwd + '/uiot/shadow/include']
 CPPPATH += [cwd + '/uiot/utils']
 
+src_base += Glob('uiot/utils/*.c')
+src_base += Glob('ports/rtthread/*.c')
 #Debug
 if GetDepend(['PKG_USING_UCLOUD_DEBUG']):
     CPPDEFINES += ['ENABLE_LOG_DEBUG', 'ENABLE_LOG_INFO', 'ENABLE_LOG_WARN', 'ENABLE_LOG_ERROR']
@@ -36,13 +40,10 @@ if GetDepend(['PKG_USING_UCLOUD_DEBUG']):
 #Gen MQTT src file
 if GetDepend(['PKG_USING_UCLOUD_MQTT']):
     src_base += Glob('uiot/mqtt/src/*.c')
-    src_base += Glob('uiot/utils/utils_timer.c')
-    src_base += Glob('uiot/utils/utils_net.c')
-    src_base += Glob('uiot/utils/utils_list.c')
-    src_base += Glob('uiot/utils/json_parser.c')
-    src_base += Glob('uiot/utils/json_token.c')
-    src_base += Glob('uiot/utils/string_utils.c')
-    src_base += Glob('ports/rtthread/*.c')
+
+#Gen HTTP src file
+if GetDepend(['PKG_USING_UCLOUD_HTTP']):
+    src_base += Glob('uiot/http/*.c')
 
 #Gen shadow src file
 if GetDepend(['PKG_USING_UCLOUD_SHADOW']):
@@ -56,8 +57,6 @@ if GetDepend(['PKG_USING_UCLOUD_DEV_MODEL']):
 if GetDepend(['PKG_USING_UCLOUD_OTA']):
     src_base += Glob('uiot/ota/src/*.c')
     src_base += Glob('ports/fal/*.c')
-    src_base += Glob('uiot/utils/utils_md5.c')
-    src_base += Glob('uiot/utils/utils_httpc.c')
 
 #TLS used
 if GetDepend(['PKG_USING_UCLOUD_TLS']):
@@ -79,6 +78,18 @@ if GetDepend(['PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH_SAMPLE']):
     sample_ucloud_mqtt_dynamic_auth_src += Glob('samples/dynamic_auth/dynamic_auth_sample.c')
 
 group = DefineGroup('sample_ucloud_mqtt_dynamic_auth', sample_ucloud_mqtt_dynamic_auth_src, depend = ['PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH_SAMPLE'], CPPPATH = CPPPATH, LOCAL_CCFLAGS = LOCAL_CCFLAGS, CPPDEFINES = CPPDEFINES)
+
+#Http Publish Example
+if GetDepend(['PKG_USING_UCLOUD_HTTP_PUBLISH_SAMPLE']):
+    sample_ucloud_http_publish_src += Glob('samples/http/http_client_sample.c')
+
+group = DefineGroup('sample_ucloud_http_publish', sample_ucloud_http_publish_src, depend = ['PKG_USING_UCLOUD_HTTP_PUBLISH_SAMPLE'], CPPPATH = CPPPATH, LOCAL_CCFLAGS = LOCAL_CCFLAGS, CPPDEFINES = CPPDEFINES)
+
+#Http Upload File Example
+if GetDepend(['PKG_USING_UCLOUD_HTTP_UPLOAD_FILE_SAMPLE']):
+    sample_ucloud_http_upload_file_src += Glob('samples/http/upload_file_sample.c')
+
+group = DefineGroup('sample_ucloud_http_upload_file', sample_ucloud_http_upload_file_src, depend = ['PKG_USING_UCLOUD_HTTP_UPLOAD_FILE_SAMPLE'], CPPPATH = CPPPATH, LOCAL_CCFLAGS = LOCAL_CCFLAGS, CPPDEFINES = CPPDEFINES)
 
 #Shadow Example
 if GetDepend(['PKG_USING_UCLOUD_SHADOW_SAMPLE']):

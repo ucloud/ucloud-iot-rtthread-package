@@ -104,6 +104,7 @@ static void ota_test_thread(void)
 
     void *h_ota = IOT_OTA_Init(PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN, client);
     if (NULL == h_ota) {
+        IOT_MQTT_Destroy(&client);
         LOG_ERROR("init OTA failed");
         return;
     }
