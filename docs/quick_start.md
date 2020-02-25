@@ -42,7 +42,8 @@
 1.  打开mqtt sample
 ```            
     --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-    [*]   Enable Mqtt                                                                                             
+    [*]   Enable Mqtt link uiot-core platform
+    [ ]   Enable Http link uiot-core platform
           Ucloud Device Config  --->
     [*]   Enable Ucloud Mqtt Sample 
     [ ]   Enable Ucloud Mqtt Dynamic Auth Sample

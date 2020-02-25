@@ -121,6 +121,8 @@ void uiot_shadow_reset(void *pClient)
 
     uiot_shadow_unsubscribe_topic(shadow_client,SHADOW_SUBSCRIBE_REQUEST_TEMPLATE);
     uiot_shadow_unsubscribe_topic(shadow_client,SHADOW_SUBSCRIBE_SYNC_TEMPLATE);
+
+    IOT_MQTT_Yield(shadow_client->mqtt,200);
     
     if (shadow_client->inner_data.request_list)
     {
