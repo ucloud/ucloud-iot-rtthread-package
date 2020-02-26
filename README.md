@@ -42,45 +42,51 @@ menuconfig配置
 RT-Thread online packages  --->
     IoT - internet of things  --->
         IoT Cloud  --->
-            [ ] ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.  --->
-              --- ucloud-iothub:  ucloud iot sdk for uiot-core platform 
-                [ ]   Enable Mqtt link uiot-core platform
-                [ ]   Enable Http link uiot-core platform
-                ucloud Device Config  --->  
+            [ ] ucloud_iot_sdk: Ucloud iot sdk for uiot-core platform.  --->
+              --- ucloud_iot_sdk:  Ucloud iot sdk for uiot-core platform 
+                Ucloud Device Config  --->                  
+                [ ]   Enable Mqtt Link uiot-core Platform
+                [ ]   Enable Http Link uiot-core Platform
+                [ ]   Enable Ucloud Debug
                 Version (latest)  --->	
 ```
 
 ## 3 软件包的使用
 根据产品需求选择合适的应用示例修改新增业务逻辑，也可新增例程编写新的业务逻辑。
 ```	
-    --- ucloud-iot-sdk: ucloud iot sdk for uiot-core platform.
-    [*]   Enable Mqtt link uiot-core platform
-    [ ]   Enable Http link uiot-core platform
+    --- ucloud_iot_sdk: Ucloud iot sdk for uiot-core platform.
           Ucloud Device Config  --->    
-    [*]   Enable Ucloud Mqtt Sample 
-    [ ]   Enable Ucloud Mqtt Dynamic Auth Sample
+    [*]   Enable Mqtt Link uiot-core Platform
+    [ ]     Enable Ucloud Mqtt Sample 
+    [ ]     Enable Ucloud Mqtt Dynamic Auth Sample
+    [*]   Enable Http Link uiot-core Platform
+    [ ]     Enable Ucloud Http Publish Sample
+    [ ]     Enable Ucloud Http Upload File Sample
     [*]   Enable Shadow      
     [ ]     Enable Ucloud Shadow Sample
     [*]   Enable Dev Model  
     [ ]     Enable Ucloud Dev Model Sample
     [*]   Enable Ota                                                                                                
     [ ]     Enable Ucloud Ota Sample  
-    [ ]   Enable Tls 
+    -*-   Enable Tls 
     [ ]   Enable Ucloud Debug
           Version (latest)  --->
 ```
 
 - 选项说明
-
-`Enable Mqtt link uiot-core platform`：使能MQTT连接云平台功能。
-
-`Enable Http link uiot-core platform`：使能HTTP连接云平台功能,只支持https,勾选会关联选中mbedTLS软件包。
-
 `Ucloud Device Config `：填写当前设备认证要素，当认证模式为动态认证时，设备密钥可以不填写
+
+`Enable Mqtt Link uiot-core Platform`：使能MQTT连接云平台功能。
 
 `Enable Ucloud Mqtt Sample`：使能静态注册mqtt和注册成功后收发消息的案例
 
 `Enable Ucloud Mqtt Dynamic Auth Sample`: 使能动态注册mqtt和注册成功后收发消息的案例
+
+`Enable Http Link uiot-core Platform`：使能HTTP连接云平台功能,包括使用https上传消息和上传文件，只支持https,勾选会关联选中mbedTLS软件包。
+
+`Enable Ucloud Http Publish Sample`：使能使用https向云平台上传消息的案例
+
+`Enable Ucloud Http Upload File Sample`: 使能使用https向云平台上传一段buffer在云端保存成文件的案例
 
 `Enable Shadow`：使能设备影子功能
 
@@ -90,7 +96,7 @@ RT-Thread online packages  --->
 
 `Enable Ucloud Dev Model Sample`：使能物模型的案例
 
-`Enable Ota`：使能远程升级版本的功能，若使能，则会关联选中fal软件包。
+`Enable Ota`：使能远程升级版本的功能，若使能由于要使用flash的分区功能进行ota升级，会关联选中fal软件包。
 
 `Enable Ucloud Ota Sample`：使能远程升级版本的案例
 
@@ -98,7 +104,7 @@ RT-Thread online packages  --->
 
 `Enable Ucloud Debug`: 使能调试打印输出
 
-`Version (latest)  --->`：
+`Version (latest)  --->`：选择软件包的版本
 
 - 使用 `pkgs --update` 命令下载需要使用的软件包
 

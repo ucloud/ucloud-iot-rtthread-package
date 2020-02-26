@@ -22,4 +22,4 @@
 
 `rtthread`： 与rtthread操作系统相关的一些接口,在rtthread系统上使用时一般不需要修改。
 
-`ssl`： 可以通过修改mbedtls文件夹下的HAL_TLS_config.h打开或关闭宏添加或删除对应的功能。
+`ssl`： 可以通过修改mbedtls文件夹下的HAL_TLS_config.h打开或关闭宏添加或删除mbedtls对应的功能。
