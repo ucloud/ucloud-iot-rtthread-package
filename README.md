@@ -42,7 +42,7 @@ menuconfig配置
 RT-Thread online packages  --->
     IoT - internet of things  --->
         IoT Cloud  --->
-            [ ] ucloud-iot-sdk: Ucloud iot sdk for uiot-core platform.  --->
+            [ ] ucloud_iot_sdk: Ucloud iot sdk for uiot-core platform.  --->
               --- ucloud_iot_sdk:  Ucloud iot sdk for uiot-core platform 
                 Ucloud Device Config  --->                  
                 [ ]   Enable Mqtt Link uiot-core Platform
@@ -54,7 +54,7 @@ RT-Thread online packages  --->
 ## 3 软件包的使用
 根据产品需求选择合适的应用示例修改新增业务逻辑，也可新增例程编写新的业务逻辑。
 ```	
-    --- ucloud-iot-sdk: Ucloud iot sdk for uiot-core platform.
+    --- ucloud_iot_sdk: Ucloud iot sdk for uiot-core platform.
           Ucloud Device Config  --->    
     [*]   Enable Mqtt Link uiot-core Platform
     [ ]     Enable Ucloud Mqtt Sample 

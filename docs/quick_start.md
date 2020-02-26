@@ -41,7 +41,7 @@
     
 1.  打开mqtt sample
 ```            
-    --- ucloud-iot-sdk: Ucloud iot sdk for uiot-core platform.
+    --- ucloud_iot_sdk: Ucloud iot sdk for uiot-core platform.
           Ucloud Device Config  --->    	
     [*]   Enable Mqtt Link uiot-core Platform
     [*]     Enable Ucloud Mqtt Sample 
