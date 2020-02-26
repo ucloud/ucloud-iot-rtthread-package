@@ -36,9 +36,9 @@ static int running_state = 0;
 static void http_upload_file_test_thread(void) 
 {
     char md5[100];    
-    char *authorization = (char *)malloc(1024);
+    char *authorization = (char *)HAL_Malloc(1024);
     memset(authorization, 0, 1024);
-    char *put_url = (char *)malloc(1024);
+    char *put_url = (char *)HAL_Malloc(1024);
     memset(put_url, 0, 1024);
     int ret = SUCCESS_RET;
     

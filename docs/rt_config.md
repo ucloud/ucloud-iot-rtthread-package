@@ -1,6 +1,6 @@
 # 编译选项参考
 
-使用本文件的编译选项测试可以通过了除动态注册外的所有sample
+使用本文件的编译选项测试通过了所有sample
 
 ## 运行硬件平台
 
@@ -13,7 +13,7 @@ STM32f767ZI + ESP8266
 
 ## 开启功能
 
-静态注册模式下，开启了设备影子，物模型 ，ota升级和tls
+开启了Mqtt和Http连接云平台，设备影子，物模型 ，ota升级和tls
 
 ## 依赖软件包
 
@@ -120,7 +120,7 @@ rtthread配置如下：
     #define RT_SYSTEM_WORKQUEUE_PRIORITY 23
     #define RT_USING_SERIAL
     #define RT_SERIAL_USING_DMA
-    #define RT_SERIAL_RB_BUFSZ 6144
+    #define RT_SERIAL_RB_BUFSZ 1500
     #define RT_USING_HWTIMER
     #define RT_USING_PIN
     #define RT_USING_RTC
@@ -196,8 +196,6 @@ rtthread配置如下：
     /* IoT Cloud */
     
     #define PKG_USING_UCLOUD_IOT_SDK
-    #define PKG_USING_UCLOUD_MQTT
-    #define PKG_USING_UCLOUD_MQTT_STATIC_AUTH
     
     /* Ucloud Device Config */
     
@@ -206,14 +204,19 @@ rtthread配置如下：
     #define PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SECRET "PRODUCT_SECRET"
     #define PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN "DEVICE_SN"
     #define PKG_USING_UCLOUD_IOT_SDK_DEVICE_SECRET "DEVICE_SECRET"
-    #define PKG_USING_UCLOUD_TLS
+    #define PKG_USING_UCLOUD_MQTT
     #define PKG_USING_UCLOUD_MQTT_SAMPLE
+    #define PKG_USING_UCLOUD_MQTT_DYNAMIC_AUTH_SAMPLE
+    #define PKG_USING_UCLOUD_HTTP
+    #define PKG_USING_UCLOUD_HTTP_PUBLISH_SAMPLE
+    #define PKG_USING_UCLOUD_HTTP_UPLOAD_FILE_SAMPLE
     #define PKG_USING_UCLOUD_SHADOW
     #define PKG_USING_UCLOUD_SHADOW_SAMPLE
     #define PKG_USING_UCLOUD_DEV_MODEL
     #define PKG_USING_UCLOUD_DEV_MODEL_SAMPLE
     #define PKG_USING_UCLOUD_OTA
     #define PKG_USING_UCLOUD_OTA_SAMPLE
+    #define PKG_USING_UCLOUD_TLS
     #define PKG_USING_UCLOUD_DEBUG
     #define PKG_USING_UCLOUD_IOT_SDK_LATEST_VERSION
     
@@ -225,7 +228,7 @@ rtthread配置如下：
     
     #define MBEDTLS_AES_ROM_TABLES
     #define MBEDTLS_ECP_WINDOW_SIZE 2
-    #define MBEDTLS_SSL_MAX_CONTENT_LEN 16384
+    #define MBEDTLS_SSL_MAX_CONTENT_LEN 6144
     #define MBEDTLS_MPI_MAX_SIZE 1024
     #define MBEDTLS_CTR_DRBG_KEYSIZE 32
     #define PKG_USING_MBEDTLS_V2710
