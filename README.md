@@ -10,16 +10,10 @@ UCloud IOT SDK for rt-thread Package 是基于[UCloud设备端C-SDK](https://git
 
 | 名称              | 说明 |
 | ----              | ---- |
-| uiot              | UCloud设备端C-SDK |
-| ports             | 移植文件目录 |
-| samples           | 示例目录 |
-|  ├─mqtt           | 静态注册收发消息示例 |
-|  ├─dynamic_auth   | 动态注册示例 |
-|  ├─http           | Http连接云平台示例 |
-|  ├─dev_model      | 物模型示例 |
-|  ├─ota            | ota升级示例 |
-|  ├─shadow         | 设备影子示例 |
 | docs              | 说明文档 |
+| ports             | 移植文件目录 |
+| samples           | 示例文件目录 |
+| uiot              | UCloud设备端C-SDK |
 | LICENSE           | 许可证文件 |
 | README.md         | 软件包使用说明 |
 | SConscript        | RT-Thread 默认的构建脚本 |
@@ -113,7 +107,7 @@ RT-Thread online packages  --->
 
 2. 打开生成的工程，编译下载到设备中
 
-### 2.4 运行demo程序
+### 2.3 运行demo程序
 系统启动后，在 MSH 中使用命令执行，以mqtt_sample为例：
 启动案例：mqtt_test_example start
 终止案例：mqtt_test_example stop
