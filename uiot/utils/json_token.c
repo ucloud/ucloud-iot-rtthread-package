@@ -135,9 +135,25 @@ int LITE_get_int16(int16_t *value, char *src) {
     return (sscanf(src, "%" SCNi16, value) == 1) ? SUCCESS_RET : FAILURE_RET;
 }
 
+/* NOTICE: scanning 8-bit types requires use of the hh specifier
+ * which is only supported on newlib platforms that
+ * are built with C99 I/O format support enabled.  If the flag in
+ * newlib.h hasn't been set during configuration to indicate this, the 8-bit
+ * scanning format macros are disabled here as they result in undefined
+ * behaviour which can include memory overwrite.  Overriding the flag after the
+ * library has been built is not recommended as it will expose the underlying
+ * undefined behaviour.so we use int16 and uint16 transfer to int8 and uint8
+ */
 int LITE_get_int8(int8_t *value, char *src) {
-    return (sscanf(src, "%" SCNi8, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    int16_t temp = 0;
+    if(1 != sscanf(src, "%" SCNi16, temp))
+    {
+        return FAILURE_RET;
+    }
+    value = (int8_t)temp;
+    return SUCCESS_RET;
 }
+
 
 int LITE_get_uint32(uint32_t *value, char *src) {
     return (sscanf(src, "%" SCNu32, value) == 1) ? SUCCESS_RET : FAILURE_RET;
@@ -148,7 +164,13 @@ int LITE_get_uint16(uint16_t *value, char *src) {
 }
 
 int LITE_get_uint8(uint8_t *value, char *src) {
-    return (sscanf(src, "%" SCNu8, value) == 1) ? SUCCESS_RET : FAILURE_RET;
+    uint16_t temp = 0;
+    if(1 != sscanf(src, "%" SCNu16, temp))
+    {
+        return FAILURE_RET;
+    }
+    value = (uint8_t)temp;
+    return SUCCESS_RET;
 }
 
 int LITE_get_float(float *value, char *src) {
