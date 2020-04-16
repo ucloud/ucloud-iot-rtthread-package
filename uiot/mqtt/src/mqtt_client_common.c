@@ -920,7 +920,8 @@ static int _handle_suback_packet(UIoT_Client *pClient, Timer *timer, QoS qos)
 
     int flag_dup = 0, i_free = -1;
 
-    for (int j = 0; j <  count; j++) {
+    int j;
+    for (j = 0; j <  count; j++) {
         /* In negative case, grantedQoS will be 0xFFFF FF80, which means -128 */
         if ((uint8_t)grantedQoS[j] == 0x80) {
             sub_nack = true;
