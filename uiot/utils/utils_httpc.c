@@ -46,13 +46,13 @@ static int _utils_parse_url(const char *url, char *host, char *path) {
     char *fragment_ptr;
 
     if (host_ptr == NULL) {
-        return -1; /* URL is invalid */
+        return ERR_PARAM_INVALID; /* URL is invalid */
     }
     host_ptr += 3;
 
     path_ptr = strchr(host_ptr, '/');
     if (NULL == path_ptr) {
-        return -2;
+        return ERR_PARAM_INVALID;
     }
 
     host_len = path_ptr - host_ptr;
@@ -413,13 +413,13 @@ int _http_send_request(http_client_t *client, const char *url, HTTP_Request_Meth
 
     ret = _http_send_header(client, host, path, method, size_fetched, range_len, client_data);
     if (ret != 0) {
-        return -2;
+        return ERR_HTTP_CONN_ERROR;
     }
 
     if (method == HTTP_POST || method == HTTP_PUT) {
         ret = _http_send_user_data(client, client_data,timeout_ms);
         if (ret < 0) {
-            ret = -3;
+            ret = ERR_HTTP_CONN_ERROR;
         }
     }
 

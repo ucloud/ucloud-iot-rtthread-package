@@ -321,6 +321,21 @@ int IOT_OTA_Destroy(void *handle)
     return SUCCESS_RET;
 }
 
+void IOT_OTA_Clear(void *handle)
+{
+    OTA_Struct_t *h_ota = (OTA_Struct_t *)handle;
+    memset(h_ota->url, 0, strlen(h_ota->url));
+    memset(h_ota->download_file_name, 0, strlen(h_ota->download_file_name));
+    memset(h_ota->version, 0, strlen(h_ota->version));    
+    memset(h_ota->md5sum, 0, strlen(h_ota->md5sum));
+    h_ota->state = OTA_STATE_UNINITED;
+    h_ota->size_last_fetched = 0;
+    h_ota->size_fetched = 0;
+    h_ota->size_file = 0;    
+    ota_lib_md5_deinit(h_ota->md5);    
+    h_ota->md5 = ota_lib_md5_init();
+    return;
+}
 
 int IOT_OTA_ReportVersion(void *handle, const char *version)
 {
@@ -438,6 +453,13 @@ int IOT_OTA_FetchYield(void *handle, char *buf, size_t buf_len, size_t range_len
     {
         /* fetch fail,try again utill 5 time */
         ret = ofc_fetch(h_ota->ch_fetch, h_ota->size_fetched ,buf, buf_len, range_len, timeout_s);
+        /* range download send request too often maybe cutdown by server, need reconnect and continue to download. */
+        if(ret == ERR_HTTP_CONN_ERROR) {
+            h_ota->ch_fetch = ofc_init(h_ota->url);
+            ofc_connect(h_ota->ch_fetch);            
+            h_ota->state = OTA_STATE_FETCHING;
+            continue;
+        } 
         if (ret < 0) {
             LOG_ERROR("Fetch firmware failed");
             h_ota->state = OTA_STATE_FETCHED;
@@ -674,7 +696,7 @@ __exit:
     if (buffer_read != RT_NULL)
         HAL_Free(buffer_read);
 
-    IOT_OTA_Destroy(h_ota);
+    IOT_OTA_Clear(h_ota);
 
     return ret;
 }
