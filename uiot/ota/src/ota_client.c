@@ -325,7 +325,6 @@ void IOT_OTA_Clear(void *handle)
 {
     OTA_Struct_t *h_ota = (OTA_Struct_t *)handle;
     memset(h_ota->url, 0, strlen(h_ota->url));
-    memset(h_ota->download_file_name, 0, strlen(h_ota->download_file_name));
     memset(h_ota->version, 0, strlen(h_ota->version));    
     memset(h_ota->md5sum, 0, strlen(h_ota->md5sum));
     h_ota->state = OTA_STATE_UNINITED;
