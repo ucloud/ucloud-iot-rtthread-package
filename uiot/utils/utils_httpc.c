@@ -508,24 +508,18 @@ int http_client_common(http_client_t *client, const char *url, int port, const c
 }
 
 int http_client_recv_data(http_client_t *client, uint32_t timeout_ms, http_client_data_t *client_data) {
-    int rc = SUCCESS_RET;
-    Timer timer;
+    int rc;
 
-    init_timer(&timer);
-    countdown_ms(&timer, timeout_ms);
-
-    do
-    {
-        if ((NULL != client_data->response_buf)
-            && (0 != client_data->response_buf_len)) {
-            rc = _http_client_recv_response(client, timeout_ms, client_data);
-        } 
-        if(client_data->is_more)
-        {
-            return SUCCESS_RET;
+    if ((NULL != client_data->response_buf)
+        && (0 != client_data->response_buf_len)) {
+        rc = _http_client_recv_response(client, timeout_ms, client_data);
+        if (rc < 0) {
+            LOG_ERROR("_http_client_recv_response is error, rc = %d", rc);
+            http_client_close(client);
+            return rc;
         }
-    }while((rc != SUCCESS_RET) && (!has_expired(&timer)));
-    return rc;
+    }
+    return SUCCESS_RET;
 }
 
 void http_client_close(http_client_t *client) {
