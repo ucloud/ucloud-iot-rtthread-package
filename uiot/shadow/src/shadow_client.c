@@ -45,7 +45,6 @@ void* IOT_Shadow_Construct(const char *product_sn, const char *device_sn, void *
 
     UIoT_Client *mqtt_client = (UIoT_Client *)ch_signal;
 
-    mqtt_client->event_handler.context = shadow_client;
     shadow_client->product_sn = product_sn;
     shadow_client->device_sn = device_sn;
     shadow_client->mqtt = mqtt_client;
