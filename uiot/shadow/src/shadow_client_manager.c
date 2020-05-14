@@ -285,6 +285,7 @@ int uiot_shadow_subscribe_topic(UIoT_Shadow *pShadow, char *topicFilter, OnMessa
     
     SubscribeParams subscribe_params = DEFAULT_SUB_PARAMS;
     subscribe_params.on_message_handler = on_message_handler;
+    subscribe_params.user_data = pShadow;    
     subscribe_params.qos = QOS1;
 
     ret = IOT_MQTT_Subscribe(mqtt_client, topic_name, &subscribe_params);
@@ -637,8 +638,7 @@ void topic_request_result_handler(void *pClient, MQTTMessage *message, void *pUs
     POINTER_VALID_CHECK_RTN(pClient);
     POINTER_VALID_CHECK_RTN(message);
 
-    UIoT_Client *mqtt_client = (UIoT_Client *)pClient;
-    UIoT_Shadow *shadow_client = (UIoT_Shadow*)mqtt_client->event_handler.context;
+    UIoT_Shadow *shadow_client = (UIoT_Shadow*)pUserdata;
 
     const char *topic = message->topic;
     size_t topic_len = message->topic_len;
@@ -738,8 +738,7 @@ void topic_sync_handler(void *pClient, MQTTMessage *message, void *pUserdata)
     POINTER_VALID_CHECK_RTN(pClient);
     POINTER_VALID_CHECK_RTN(message);
 
-    UIoT_Client *mqtt_client = (UIoT_Client *)pClient;
-    UIoT_Shadow *shadow_client = (UIoT_Shadow*)mqtt_client->event_handler.context;
+    UIoT_Shadow *shadow_client = (UIoT_Shadow*)pUserdata;
 
     const char *topic = message->topic;
     size_t topic_len = message->topic_len;
