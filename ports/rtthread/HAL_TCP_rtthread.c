@@ -172,10 +172,20 @@ int32_t HAL_TCP_Read(_IN_ uintptr_t fd, _OU_ unsigned char *buf, _IN_ size_t len
         ret = recv(tcp_fd, buf + len_recv, len - len_recv, MSG_DONTWAIT);
         if (ret > 0) {
             len_recv += ret;
-        }else if (errno == EINTR || errno == EAGAIN){
+        }
+        else if (0 == ret) 
+        {
+            break;
+        }
+        else 
+        {
+            if (errno == EINTR || errno == EAGAIN)
+            {
+                continue;
+            }
             printf("read fail,try again\n");
             err_code = ERR_TCP_READ_FAILED;
-            continue;
+            break;
         }
     } while (len_recv < len);
 
