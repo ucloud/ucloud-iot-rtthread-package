@@ -175,7 +175,7 @@ int32_t HAL_TCP_Read(_IN_ uintptr_t fd, _OU_ unsigned char *buf, _IN_ size_t len
         }
         else if (0 == ret) 
         {
-            break;
+            continue;
         }
         else 
         {
