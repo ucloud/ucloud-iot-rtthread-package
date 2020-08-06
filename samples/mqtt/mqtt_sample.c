@@ -184,9 +184,6 @@ static int _register_subscribe_topics(void *client)
 
 static void mqtt_test_thread(void) {    
     int rc;
-
-    // to avoid process crash when writing to a broken socket
-    signal(SIGPIPE, SIG_IGN);
     
     //init connection
     MQTTInitParams init_params = DEFAULT_MQTT_INIT_PARAMS;
