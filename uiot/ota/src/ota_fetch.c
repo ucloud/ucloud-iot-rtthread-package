@@ -21,15 +21,6 @@
 #include "ca.h"
 #include "utils_httpc.h"
 
-typedef struct {
-
-    const char *url;
-    http_client_t http;             /* http client */
-    http_client_data_t http_data;   /* http client data */
-
-} OTA_Http_Client;
-
-
 void *ofc_init(const char *url)
 {
     FUNC_ENTRY;

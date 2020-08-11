@@ -67,9 +67,15 @@ void *dsc_init(const char *product_sn, const char *device_sn, void *channel, voi
 
 int dsc_deinit(void *handle);
 
+int dm_gen_properties_payload(DM_Property_t *property, int property_num, DM_Type type, bool value_key, char *properties_payload);
+
 int dm_mqtt_property_report_publish(DM_MQTT_Struct_t *handle, DM_Type type, int request_id, const char *payload);
 
+int dm_mqtt_property_report_publish_Ex(DM_MQTT_Struct_t *handle, DM_Type type, int request_id, DM_Property_t *property, int property_num);
+
 int dm_mqtt_event_publish(DM_MQTT_Struct_t *handle, int request_id, const char *identifier, const char *payload);
+
+int dm_mqtt_event_publish_Ex(DM_MQTT_Struct_t *handle, int request_id, DM_Event_t *event);
 
 #ifdef __cplusplus
 }

@@ -22,9 +22,9 @@ extern "C" {
 
 #define DM_TOPIC_BUF_LEN         (128)
 #define DM_MSG_REPLY_BUF_LEN     (128)
-#define DM_MSG_REPORT_BUF_LEN    (256)
-#define DM_EVENT_POST_BUF_LEN    (256)
-#define DM_CMD_REPLY_BUF_LEN     (256)
+#define DM_MSG_REPORT_BUF_LEN    (2048)
+#define DM_EVENT_POST_BUF_LEN    (2048)
+#define DM_CMD_REPLY_BUF_LEN     (2048)
 
 //pub
 #define PROPERTY_RESTORE_TOPIC_TEMPLATE                  "/$system/%s/%s/tmodel/property/restore"

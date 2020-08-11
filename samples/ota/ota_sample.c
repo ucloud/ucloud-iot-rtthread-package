@@ -110,12 +110,12 @@ static void ota_test_thread(void)
     }
 
     /* Must report version first */
-    if (IOT_OTA_ReportVersion(h_ota, "1.0.0") < 0) {
+    if (IOT_OTA_ReportVersion(h_ota, "default", "1.0.0") < 0) {
         LOG_ERROR("report OTA version failed");
         return;
     }
 
-    if (IOT_OTA_RequestFirmware(h_ota, "1.0.0") < 0) {
+    if (IOT_OTA_RequestFirmware(h_ota, "default", "1.0.0") < 0) {
         LOG_ERROR("Request firmware failed");
         return;
     }
