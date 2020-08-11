@@ -34,11 +34,87 @@ typedef enum _dm_type {
     DM_TYPE_MAX
 }DM_Type;
 
+typedef enum{
+    TYPE_INT,
+    TYPE_FLOAT,
+    TYPE_DOUBLE,
+    TYPE_BOOL,
+    TYPE_ENUM,
+    TYPE_STRING,
+    TYPE_DATE,
+} DM_Base_Type;
+
+typedef enum{
+    TYPE_NODE,
+    TYPE_STRUCT,
+    TYPE_ARRAY_BASE,
+    TYPE_ARRAY_STRUCT,
+} DM_Parse_Type;
+
+typedef union{
+    int         int32_value;
+    float       float32_value;
+    double      float64_value;
+    bool        bool_value;
+    int         enum_value;
+    char        *string_value;
+    long        date_value;
+}DM_Base_Value_U;
+
+typedef struct{    
+    DM_Base_Type        base_type;
+    char                *key;
+    DM_Base_Value_U     value;
+} DM_Node_t;
+
+typedef struct{
+    char                *key;    
+    DM_Node_t           *value; 
+    int                 num;
+} DM_Type_Struct_t;
+
+typedef struct{
+    char                *key;
+    DM_Node_t           *value; 
+    int                 num;
+} DM_Array_Base_t;
+
+typedef struct{
+    char                *key;
+    DM_Type_Struct_t    *value; 
+    int                 num;
+} DM_Array_Struct_t;
+
+typedef union{
+    DM_Node_t                   *dm_node;
+    DM_Type_Struct_t            *dm_struct;
+    DM_Array_Base_t             *dm_array_base;
+    DM_Array_Struct_t           *dm_array_struct;
+}DM_Property_Value_U;
+
+typedef struct{
+    DM_Parse_Type                   parse_type; 
+    DM_Property_Value_U             value;     
+    int                             desired_ver;
+} DM_Property_t;
+
+typedef struct{
+    char            *event_identy;
+    DM_Property_t   *dm_property;
+    int             property_num;
+} DM_Event_t;
+
+typedef struct{
+    DM_Property_t   *input;
+    int             input_num;
+    DM_Property_t   *output;
+    int             output_num;
+} DM_Command_t;
 
 typedef int (* PropertyRestoreCB)(const char *request_id, const int ret_code, const char *property);
 typedef int (* PropertySetCB)(const char *request_id, const char *property);
 typedef int (* PropertyDesiredGetCB)(const char *request_id, const int ret_code, const char *desired);
-typedef int (* CommandCB)(const char *request_id, const char *identifier, const char *input, char **output);
+typedef int (* CommandCB)(const char *request_id, const char *identifier, const char *input, char *output);
 typedef int (* CommonReplyCB)(const char *request_id, const int ret_code);
 
 #define DECLARE_DM_CALLBACK(type, cb)  int uiot_register_for_##type(void*, cb);
@@ -105,6 +181,24 @@ int IOT_DM_Destroy(void *handle);
  */
 int IOT_DM_Property_Report(void *handle, DM_Type type, int request_id, const char *payload);
 
+/**
+ * @brief 属性有关的消息上报,拓展接口
+ *
+ * @param handle:     IOT_DM_Init返回的句柄
+ * @param type:       消息类型，此处为
+    PROPERTY_RESTORE,
+    PROPERTY_POST,
+    PROPERTY_DESIRED_GET,
+    PROPERTY_DESIRED_DELETE
+    四种消息类型之一
+ * @param request_id:   消息的request_id
+ * @param property_num: 属性个数
+ * @param ...:          属性
+ *
+ * @retval   0 : 成功
+ * @retval < 0 : 失败，返回具体错误码
+ */
+int IOT_DM_Property_ReportEx(void *handle, DM_Type type, int request_id, int property_num, ...);
 
 /**
  * @brief 事件消息上报
@@ -119,6 +213,29 @@ int IOT_DM_Property_Report(void *handle, DM_Type type, int request_id, const cha
  */
 int IOT_DM_TriggerEvent(void *handle, int request_id, const char *identifier, const char *payload);
 
+/**
+ * @brief 事件消息上报，拓展接口
+ *
+ * @param handle:     IOT_DM_Init返回的句柄
+ * @param request_id: 消息的request_id
+ * @param event:      事件的句柄
+ *
+ * @retval   0 : 成功
+ * @retval < 0 : 失败，返回具体错误码
+ */
+int IOT_DM_TriggerEventEx(void *handle, int request_id, DM_Event_t *event);
+
+/**
+ * @brief 命令消息输出参数键值对生成
+ * 
+ * @param output:       生成的输出参数键值对
+ * @param property_num: 属性个数
+ * @param ...:          属性
+ *
+ * @retval   0 : 成功
+ * @retval < 0 : 失败，返回具体错误码
+ */
+int IOT_DM_GenCommandOutput(char *output, int property_num, ...);
 
 /**
  * @brief 在当前线程为底层MQTT客户端让出一定CPU执行时间，让其接收网络报文并将消息分发到用户的回调函数中

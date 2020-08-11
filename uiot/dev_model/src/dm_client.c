@@ -63,6 +63,32 @@ int IOT_DM_Property_Report(void *handle, DM_Type type, int request_id, const cha
     return dm_mqtt_property_report_publish(h_dm->ch_signal, type, request_id, payload);
 }
 
+int IOT_DM_Property_ReportEx(void *handle, DM_Type type, int request_id, int property_num, ...)
+{
+    POINTER_VALID_CHECK(handle, FAILURE_RET);
+    int loop = 0;
+    int ret = 0;
+    DM_Struct_t *h_dm = (DM_Struct_t*) handle;
+
+    va_list pArgs;
+    va_start(pArgs, property_num);
+
+    DM_Property_t *property = (DM_Property_t *)HAL_Malloc(property_num * sizeof(DM_Property_t));
+
+    for(loop = 0; loop < property_num; loop++)
+    {
+        DM_Property_t *property_node;
+        property_node  = va_arg(pArgs, DM_Property_t *);
+        property[loop] = *property_node;
+    }
+    
+    va_end(pArgs);
+    
+    ret = dm_mqtt_property_report_publish_Ex(h_dm->ch_signal, type, request_id, property, property_num);
+    HAL_Free(property);
+    return ret;
+}
+
 int IOT_DM_TriggerEvent(void *handle, int request_id, const char *identifier, const char *payload)
 {
     POINTER_VALID_CHECK(handle, FAILURE_RET);
@@ -70,6 +96,40 @@ int IOT_DM_TriggerEvent(void *handle, int request_id, const char *identifier, co
     DM_Struct_t *h_dm = (DM_Struct_t*) handle;
 
     return dm_mqtt_event_publish(h_dm->ch_signal, request_id, identifier, payload);
+}
+
+int IOT_DM_TriggerEventEx(void *handle, int request_id, DM_Event_t *event)
+{
+    POINTER_VALID_CHECK(handle, FAILURE_RET);
+
+    DM_Struct_t *h_dm = (DM_Struct_t*) handle;
+
+    return dm_mqtt_event_publish_Ex(h_dm->ch_signal, request_id, event);
+}
+
+int IOT_DM_GenCommandOutput(char *output, int property_num, ...)
+{
+    POINTER_VALID_CHECK(output, FAILURE_RET);
+    int ret = 0;
+    int loop = 0;
+
+    va_list pArgs;
+    va_start(pArgs, property_num);
+
+    DM_Property_t *property = (DM_Property_t *)HAL_Malloc(property_num * sizeof(DM_Property_t));
+
+    for(loop = 0; loop < property_num; loop++)
+    {
+        DM_Property_t *property_node;
+        property_node  = va_arg(pArgs, DM_Property_t *);
+        property[loop] = *property_node;
+    }
+    
+    va_end(pArgs);
+    
+    ret = dm_gen_properties_payload(property, property_num, PROPERTY_POST, false, output);    
+    HAL_Free(property);
+    return ret;
 }
 
 int IOT_DM_Yield(void *handle, uint32_t timeout_ms)

@@ -23,16 +23,6 @@
 #include "ota_config.h"
 #include "ota_internal.h"
 
-/* OSC, OTA signal channel */
-typedef struct  {
-    void                    *mqtt;
-    const char              *product_sn;
-    const char              *device_sn;
-    char                    topic_upgrade[OTA_TOPIC_BUF_LEN];
-    OnOTAMessageCallback    msg_callback;
-    void                    *context;
-} OTA_MQTT_Struct_t;
-
 static int _ota_mqtt_gen_topic_name(char *buf, size_t buf_len, const char *ota_topic_type, const char *product_sn,
                                     const char *device_sn)
 {
@@ -119,6 +109,10 @@ void *osc_init(const char *product_sn, const char *device_sn, void *channel, OnO
     h_osc->device_sn = device_sn;
     h_osc->msg_callback = callback;
     h_osc->context = context;
+    h_osc->msg_list = list_new();
+    h_osc->msg_mutex = HAL_MutexCreate();
+    if (h_osc->msg_mutex == NULL)
+        goto do_exit;
 
     /* subscribe the OTA topic: "/$system/$(product_sn)/$(device_sn)/ota/downstream" */
     ret = _ota_mqtt_gen_topic_name(h_osc->topic_upgrade, OTA_TOPIC_BUF_LEN, OTA_DOWNSTREAM_TOPIC_TYPE, product_sn,
@@ -152,6 +146,11 @@ do_exit:
 int osc_deinit(void *handle)
 {
     FUNC_ENTRY;
+
+    OTA_MQTT_Struct_t  *h_osc = handle;
+
+    list_destroy(h_osc->msg_list);
+    HAL_MutexDestroy(h_osc->msg_mutex);
 
     if (NULL != handle) {
         HAL_Free(handle);

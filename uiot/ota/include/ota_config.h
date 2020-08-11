@@ -22,16 +22,18 @@ extern "C" {
 
 #define TYPE_FIELD                  "Method"
 #define MD5_FIELD                   "Payload.MD5"
+#define MODULE_FIELD                "Payload.Module"
 #define VERSION_FIELD               "Payload.Version"
 #define URL_FIELD                   "Payload.URL"
 #define SIZE_FIELD                  "Payload.Size"
 #define UPDATE_FIRMWARE_METHOD      "update_firmware"
+#define CANCEL_UPDATE_METHOD        "cancel_update"
 
-#define REPORT_PROGRESS_MSG_TEMPLATE      "{\"Method\": \"report_progress\", \"Payload\": {\"State\":\"%s\", \"Percent\":%d}}"
-#define REPORT_SUCCESS_MSG_TEMPLATE       "{\"Method\": \"report_success\", \"Payload\":{\"Version\":\"%s\"}}"
-#define REPORT_FAIL_MSG_TEMPLATE          "{\"Method\": \"report_fail\", \"Payload\": {\"ErrCode\": %d}}"
-#define REPORT_VERSION_MSG_TEMPLATE       "{\"Method\": \"report_version\", \"Payload\":{\"Version\":\"%s\"}}"
-#define REQUEST_FIRMWARE_MSG_TEMPLATE     "{\"Method\": \"request_firmware\", \"Payload\":{\"Version\":\"%s\"}}"
+#define REPORT_PROGRESS_MSG_TEMPLATE      "{\"Method\": \"report_progress\", \"Payload\": {\"State\":\"%s\", \"Percent\":%d, \"Module\":\"%s\", \"Version\":\"%s\" }}"
+#define REPORT_SUCCESS_MSG_TEMPLATE       "{\"Method\": \"report_success\", \"Payload\":{\"Module\":\"%s\", \"Version\":\"%s\"}}"
+#define REPORT_FAIL_MSG_TEMPLATE          "{\"Method\": \"report_fail\", \"Payload\": {\"ErrCode\": %d, \"Module\":\"%s\", \"Version\":\"%s\"}}"
+#define REPORT_VERSION_MSG_TEMPLATE       "{\"Method\": \"report_version\", \"Payload\":{\"Module\":\"%s\", \"Version\":\"%s\"}}"
+#define REQUEST_FIRMWARE_MSG_TEMPLATE     "{\"Method\": \"request_firmware\", \"Payload\":{\"Module\":\"%s\", \"Version\":\"%s\"}}"
 
 #define OTA_VERSION_STR_LEN_MIN     (1)
 #define OTA_VERSION_STR_LEN_MAX     (32)

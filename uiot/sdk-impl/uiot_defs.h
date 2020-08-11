@@ -134,7 +134,7 @@ typedef enum {
     {\
     HAL_Printf("DEBUG:   %s L#%d ", __func__, __LINE__);  \
     HAL_Printf(__VA_ARGS__); \
-    HAL_Printf("\n"); \
+    HAL_Printf("\r\n"); \
     }
 #else
 #define LOG_DEBUG(...)
@@ -149,7 +149,7 @@ typedef enum {
 #define LOG_INFO(...)    \
     {\
     HAL_Printf(__VA_ARGS__); \
-    HAL_Printf("\n"); \
+    HAL_Printf("\r\n"); \
     }
 #else
 #define LOG_INFO(...)
@@ -165,7 +165,7 @@ typedef enum {
     { \
     HAL_Printf("WARN:  %s L#%d ", __func__, __LINE__);  \
     HAL_Printf(__VA_ARGS__); \
-    HAL_Printf("\n"); \
+    HAL_Printf("\r\n"); \
     }
 #else
 #define LOG_WARN(...)
@@ -181,7 +181,7 @@ typedef enum {
     { \
     HAL_Printf("ERROR: %s L#%d ", __func__, __LINE__); \
     HAL_Printf(__VA_ARGS__); \
-    HAL_Printf("\n"); \
+    HAL_Printf("\r\n"); \
     }
 #else
 #define LOG_ERROR(...)
@@ -190,16 +190,16 @@ typedef enum {
 #ifdef ENABLE_IOT_TRACE
 #define FUNC_ENTRY    \
     {\
-    HAL_Printf("FUNC_ENTRY:   %s L#%d \n", __func__, __LINE__);  \
+    HAL_Printf("FUNC_ENTRY:   %s L#%d \r\n", __func__, __LINE__);  \
     }
 #define FUNC_EXIT    \
     {\
-    HAL_Printf("FUNC_EXIT:   %s L#%d \n", __func__, __LINE__);  \
+    HAL_Printf("FUNC_EXIT:   %s L#%d \r\n", __func__, __LINE__);  \
     return; \
     }
 #define FUNC_EXIT_RC(x)    \
     {\
-    HAL_Printf("FUNC_EXIT:   %s L#%d Return Code : %d \n", __func__, __LINE__, x);  \
+    HAL_Printf("FUNC_EXIT:   %s L#%d Return Code : %d \r\n", __func__, __LINE__, x);  \
     return x; \
     }
 #else
