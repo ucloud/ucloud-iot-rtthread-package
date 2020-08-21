@@ -26,11 +26,10 @@ void * HAL_Download_Name_Set(void * handle)
 
 void * HAL_Download_Init(_IN_ void * name)
 {
-    char * file_name =(char *)name;
     const struct fal_partition * dl_part = RT_NULL;
-    if ((dl_part = fal_partition_find(file_name)) == RT_NULL)
+    if ((dl_part = fal_partition_find((char *)name)) == RT_NULL)
     {
-        LOG_ERROR("Firmware download failed! Partition (%s) find error!", file_name);
+        LOG_ERROR("Firmware download failed! Partition (%s) find error!", name);
         return NULL;
     }
 
