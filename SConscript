@@ -32,7 +32,9 @@ CPPPATH += [cwd + '/uiot/shadow/include']
 CPPPATH += [cwd + '/uiot/utils']
 
 src_base += Glob('uiot/utils/*.c')
-src_base += Glob('ports/rtthread/*.c')
+src_base += Glob('ports/rtthread/HAL_OS_rtthread.c')
+src_base += Glob('ports/rtthread/HAL_TCP_rtthread.c')
+src_base += Glob('ports/rtthread/HAL_Timer_rtthread.c')
 #Debug
 if GetDepend(['PKG_USING_UCLOUD_DEBUG']):
     CPPDEFINES += ['ENABLE_LOG_DEBUG', 'ENABLE_LOG_INFO', 'ENABLE_LOG_WARN', 'ENABLE_LOG_ERROR']
@@ -57,6 +59,7 @@ if GetDepend(['PKG_USING_UCLOUD_DEV_MODEL']):
 if GetDepend(['PKG_USING_UCLOUD_OTA']):
     src_base += Glob('uiot/ota/src/*.c')
     src_base += Glob('ports/fal/*.c')
+    src_base += Glob('ports/rtthread/HAL_Flash_rtthread.c')
 
 #TLS used
 if GetDepend(['PKG_USING_UCLOUD_TLS']):
