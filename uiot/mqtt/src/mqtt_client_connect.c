@@ -365,8 +365,7 @@ int uiot_mqtt_disconnect(UIoT_Client *pClient) {
     HAL_MutexLock(pClient->lock_write_buf);
     ret = serialize_packet_with_zero_payload(pClient->write_buf, pClient->write_buf_size, DISCONNECT, &serialized_len);
     if (ret != SUCCESS_RET) {
-        HAL_MutexUnlock(pClient->lock_write_buf);
-        return ret;
+        goto end;
     }
 
     init_timer(&timer);
@@ -376,13 +375,13 @@ int uiot_mqtt_disconnect(UIoT_Client *pClient) {
     if (serialized_len > 0) {
         ret = send_mqtt_packet(pClient, serialized_len, &timer);
         if (ret != SUCCESS_RET) {
-            HAL_MutexUnlock(pClient->lock_write_buf);
-            return ret;
+            goto end;
         }
     }
-    HAL_MutexUnlock(pClient->lock_write_buf);
 
-    // 3. 断开底层TCP连接, 并修改相关标识位
+    // 3. 断开底层TCP连接, 并修改相关标识位    
+end:    
+    HAL_MutexUnlock(pClient->lock_write_buf);
     pClient->network_stack.disconnect(&(pClient->network_stack));
     set_client_conn_state(pClient, DISCONNECTED);
     pClient->was_manually_disconnected = 1;
