@@ -42,7 +42,7 @@ static int _publish_msg(void *client)
 {
     char topicName[128] = {0};
     int num = 18;
-    HAL_Snprintf(topicName, 128, "/%s/%s/upload/event", PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN);
+    HAL_Snprintf(topicName, 128, "/%s/%s/upload", PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN);
 
     PublishParams pub_params = DEFAULT_PUB_PARAMS;
     
@@ -59,7 +59,7 @@ static int _publish_msg(void *client)
 static int _register_subscribe_topics(void *client)
 {
     static char topic_name[128] = {0};
-    HAL_Snprintf(topic_name, 128, "/%s/%s/upload/event", PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN);
+    HAL_Snprintf(topic_name, 128, "/%s/%s/set", PKG_USING_UCLOUD_IOT_SDK_PRODUCT_SN, PKG_USING_UCLOUD_IOT_SDK_DEVICE_SN);
 
     SubscribeParams sub_params = DEFAULT_SUB_PARAMS;
     sub_params.on_message_handler = on_message_callback;
