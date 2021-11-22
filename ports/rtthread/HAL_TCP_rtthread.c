@@ -17,6 +17,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/time.h>
+#include <sys/errno.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
 
